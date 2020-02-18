@@ -1,7 +1,6 @@
 package com.company;
 
-import java.util.Random;
-import java.util.Stack;
+import java.util.*;
 
 public class MazeGenerator {
     private int Height = 13;
@@ -12,10 +11,42 @@ public class MazeGenerator {
     private Stack<Integer> VisitedXCoords = new Stack();
     private Stack<Integer> VisitedYCoords = new Stack();
 
-    //private GetNext()
+    private void GetRandomNext(int choice, int CurrentXCoord, int CurrentYCoord){
+        switch(choice){
+            case 1:
+                if (CurrentXCoord + 2 <= Width && this.Maze[CurrentYCoord][CurrentXCoord+2] == WallSymbol){
+                    this.Maze[CurrentYCoord][CurrentXCoord+1] = PathSymbol;
+                    this.Maze[CurrentYCoord][CurrentXCoord+2] = PathSymbol;
+                    VisitedXCoords.push(CurrentXCoord + 2);
+                    VisitedYCoords.push(CurrentYCoord);
+                }
+            case 2:
+                if (CurrentXCoord - 2 > 0 && this.Maze[CurrentYCoord][CurrentXCoord-2] == WallSymbol) {
+                    this.Maze[CurrentYCoord][CurrentXCoord - 1] = PathSymbol;
+                    this.Maze[CurrentYCoord][CurrentXCoord - 2] = PathSymbol;
+                    VisitedXCoords.push(CurrentXCoord - 2);
+                    VisitedYCoords.push(CurrentYCoord);
+                }
+            case 3:
+                if (CurrentYCoord + 2 <= Height && this.Maze[CurrentYCoord+2][CurrentXCoord] == WallSymbol) {
+                    this.Maze[CurrentYCoord + 1][CurrentXCoord] = PathSymbol;
+                    this.Maze[CurrentYCoord + 2][CurrentXCoord] = PathSymbol;
+                    VisitedXCoords.push(CurrentXCoord);
+                    VisitedYCoords.push(CurrentYCoord + 2);
+                }
+            case 4:
+                if (CurrentYCoord - 2 > 0 && this.Maze[CurrentYCoord-2][CurrentXCoord] == WallSymbol){
+                    this.Maze[CurrentYCoord-1][CurrentXCoord] = PathSymbol;
+                    this.Maze[CurrentYCoord-2][CurrentXCoord] = PathSymbol;
+                    VisitedXCoords.push(CurrentXCoord);
+                    VisitedYCoords.push(CurrentYCoord - 2);
+                }
+        }
+    }
 
     public MazeGenerator(){
-
+        Integer[] intArray = { 1, 2, 3, 4};
+        List<Integer> Choices = Arrays.asList(intArray);
         this.MazeFill();
         Random choice = new Random();
         int StartingPointX = choice.nextInt(Width);
@@ -26,30 +57,13 @@ public class MazeGenerator {
         while (!VisitedYCoords.isEmpty() && !VisitedXCoords.isEmpty()){
             int CurrentXCoord = VisitedXCoords.pop();
             int CurrentYCoord = VisitedYCoords.pop();
-            if (CurrentXCoord + 2 <= Width && this.Maze[CurrentYCoord][CurrentXCoord+2] == WallSymbol){
-                this.Maze[CurrentYCoord][CurrentXCoord+1] = PathSymbol;
-                this.Maze[CurrentYCoord][CurrentXCoord+2] = PathSymbol;
-                VisitedXCoords.push(CurrentXCoord + 2);
-                VisitedYCoords.push(CurrentYCoord);
+            Collections.shuffle(Choices);
+            for (int pick : Choices){
+                GetRandomNext(pick, CurrentXCoord, CurrentYCoord);
             }
-            else if (CurrentXCoord - 2 > 0 && this.Maze[CurrentYCoord][CurrentXCoord-2] == WallSymbol){
-                this.Maze[CurrentYCoord][CurrentXCoord-1] = PathSymbol;
-                this.Maze[CurrentYCoord][CurrentXCoord-2] = PathSymbol;
-                VisitedXCoords.push(CurrentXCoord - 2);
-                VisitedYCoords.push(CurrentYCoord);
-            }
-            else if (CurrentYCoord + 2 <= Height && this.Maze[CurrentYCoord+2][CurrentXCoord] == WallSymbol){
-                this.Maze[CurrentYCoord+1][CurrentXCoord] = PathSymbol;
-                this.Maze[CurrentYCoord+2][CurrentXCoord] = PathSymbol;
-                VisitedXCoords.push(CurrentXCoord);
-                VisitedYCoords.push(CurrentYCoord + 2);
-            }
-            else if (CurrentYCoord - 2 > 0 && this.Maze[CurrentYCoord-2][CurrentXCoord] == WallSymbol){
-                this.Maze[CurrentYCoord-1][CurrentXCoord] = PathSymbol;
-                this.Maze[CurrentYCoord-2][CurrentXCoord] = PathSymbol;
-                VisitedXCoords.push(CurrentXCoord);
-                VisitedYCoords.push(CurrentYCoord - 2);
-            }
+
+
+
 
 
         }

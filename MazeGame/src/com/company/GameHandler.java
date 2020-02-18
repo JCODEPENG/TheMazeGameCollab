@@ -6,5 +6,7 @@ public class GameHandler {
         MazeGenerator Maze = new MazeGenerator();
 
         Maze.OutputMaze();
+
+
     }
 }
