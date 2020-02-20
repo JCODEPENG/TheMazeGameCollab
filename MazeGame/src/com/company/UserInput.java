@@ -25,4 +25,8 @@ public class UserInput {
             //PrintErrorMessage()
         }
     }
+
+    public char ReturnInputKey(){
+        return this.InputKey;
+    }
 }
