@@ -10,45 +10,51 @@ public class MazeHandler {
     }
 
     public void UpdatePlayer(int Choice){
-        switch (Choice){
-            case 1:
-                this.Player.MoveUp();
-                if (isWall(this.Player.GetX(), this.Player.GetY())){
-                    this.Player.MoveDown();
-                    System.out.println("Error it's a wall");
-                }
-                else{
-                    this.BaseMaze[this.Player.GetY()][this.Player.GetX()] = this.Player.GetSymbol();
-                }
-            case 2:
-                this.Player.MoveLeft();
-                if (isWall(this.Player.GetX(), this.Player.GetY())){
-                    this.Player.MoveRight();
-                    System.out.println("Error it's a wall");
-                }
-                else{
-                    this.BaseMaze[this.Player.GetY()][this.Player.GetX()] = this.Player.GetSymbol();
-                }
-            case 3:
-                this.Player.MoveDown();
-                if (isWall(this.Player.GetX(), this.Player.GetY())){
-                    this.Player.MoveUp();
-                    System.out.println("Error it's a wall");
-                }
-                else{
-                    this.BaseMaze[this.Player.GetY()][this.Player.GetX()] = this.Player.GetSymbol();
-                }
-            case 4:
-                this.Player.MoveRight();
-                if (isWall(this.Player.GetX(), this.Player.GetY())){
-                    this.Player.MoveLeft();
-                    System.out.println("Error it's a wall");
-                }
-                else{
-                    this.BaseMaze[this.Player.GetY()][this.Player.GetX()] = this.Player.GetSymbol();
-                }
+        int PreviousPositionX = this.Player.GetX();
+        int PreviousPositionY = this.Player.GetY();
 
+        if (Choice == 1) {
+            this.Player.MoveUp();
+            if (isWall(this.Player.GetX(), this.Player.GetY())) {
+                this.Player.MoveDown();
+                System.out.println("Error it's a wall");
+            } else {
+                this.BaseMaze[PreviousPositionY][PreviousPositionX] = 2;
+                this.BaseMaze[this.Player.GetY()][this.Player.GetX()] = this.Player.GetSymbol();
+            }
         }
+        if(Choice == 2) {
+            this.Player.MoveLeft();
+            if (isWall(this.Player.GetX(), this.Player.GetY())) {
+                this.Player.MoveRight();
+                System.out.println("Error it's a wall");
+            } else {
+                this.BaseMaze[PreviousPositionY][PreviousPositionX] = 2;
+                this.BaseMaze[this.Player.GetY()][this.Player.GetX()] = this.Player.GetSymbol();
+            }
+        }
+        if(Choice == 3) {
+            this.Player.MoveDown();
+            if (isWall(this.Player.GetX(), this.Player.GetY())) {
+                this.Player.MoveUp();
+                System.out.println("Error it's a wall");
+            } else {
+                this.BaseMaze[PreviousPositionY][PreviousPositionX] = 2;
+                this.BaseMaze[this.Player.GetY()][this.Player.GetX()] = this.Player.GetSymbol();
+            }
+        }
+        if (Choice == 4) {
+            this.Player.MoveRight();
+            if (isWall(this.Player.GetX(), this.Player.GetY())) {
+                this.Player.MoveLeft();
+                System.out.println("Error it's a wall");
+            } else {
+                this.BaseMaze[PreviousPositionY][PreviousPositionX] = 2;
+                this.BaseMaze[this.Player.GetY()][this.Player.GetX()] = this.Player.GetSymbol();
+            }
+        }
+
+
     }
 
     public boolean isWall(int PosX, int PosY){

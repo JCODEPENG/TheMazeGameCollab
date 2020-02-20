@@ -24,7 +24,7 @@ public class Mouse {
     }
 
     public void MoveUp(){
-        this.PositionY = this.PositionY - 1;
+        this.PositionY = this.PositionY -1;
         System.out.println("postiony is now "+ this.PositionY );
     }
 
@@ -32,6 +32,7 @@ public class Mouse {
         this.PositionY = this.PositionY + 1;
         System.out.println("postiony is now "+  this.PositionY );
     }
+
 
     public void MoveRight(){
         this.PositionX = this.PositionX + 1;
