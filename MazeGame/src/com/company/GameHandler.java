@@ -3,8 +3,10 @@ package com.company;
 import java.util.Scanner;
 
 public class GameHandler {
+    private static int CheeseCollected = 0;
 
     public static void main(String[] args) {
+
         MazeHandler Testing = new MazeHandler();
         boolean Carryon = true;
         Testing.UpdateCheese();
@@ -20,11 +22,22 @@ public class GameHandler {
 
                 Testing.UpdatePlayer(Key);
                 Testing.UpdateCat();
+                if (Testing.CheeseEaten()){
+
+                    CheeseCollected++;
+                    System.out.println("Number of Cheese eaten: " + CheeseCollected);
+                    Testing.UpdateCheese();
+                }
+                if (Testing.PlayerEaten()){
+                    System.out.println("END GAME");
+                    break;
+                }
 
             }
 
 
         }
+
 //        Cat Object = new Cat(1, 2, 3);
 //        Object.MoveRandom();
 //        int printout = Object.GetX();

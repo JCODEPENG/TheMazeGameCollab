@@ -6,7 +6,7 @@ public class MazeHandler {
     private int[][] BaseMaze;
     private int UnexploredRegions[][];
     private Mouse Player = new Mouse(1 ,1 , 4);
-    private Cat Cat1 = new Cat(18, 4, 5);
+    private Cat Cat1 = new Cat(3, 3, 5);
     private Cheese Cheese;
 
 
@@ -101,7 +101,19 @@ public class MazeHandler {
 
     }
 
-    if
+    public boolean CheeseEaten(){
+        if (Player.GetX() == Cheese.GetX() && Player.GetY() == Cheese.GetY()){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean PlayerEaten(){
+        if (Cat1.GetX() == Player.GetX() && Cat1.GetY() == Player.GetY()){
+            return true;
+        }
+        return false;
+    }
 
     public boolean isWall(int PosX, int PosY){
         if (this.BaseMaze[PosY][PosX] == 3){
