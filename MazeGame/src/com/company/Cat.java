@@ -29,4 +29,5 @@ public class Cat extends Mouse {
                 throw new IllegalStateException("Unexpected value: " + ChoicePicked);
         }
     }
+
 }

@@ -7,6 +7,7 @@ public class GameHandler {
     public static void main(String[] args) {
         MazeHandler Testing = new MazeHandler();
         boolean Carryon = true;
+        Testing.UpdateCheese();
         while (Carryon){
             Testing.tmpPrint();
             System.out.println("Input Key: ");
@@ -16,8 +17,12 @@ public class GameHandler {
                 break;
             }
             else{
+
                 Testing.UpdatePlayer(Key);
+                Testing.UpdateCat();
+
             }
+
 
         }
 //        Cat Object = new Cat(1, 2, 3);

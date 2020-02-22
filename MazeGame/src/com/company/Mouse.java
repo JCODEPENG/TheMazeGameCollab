@@ -11,6 +11,8 @@ public class Mouse {
         this.PlayerSymbol = Symbol;
     }
 
+
+
     public int GetX(){
         return this.PositionX;
     }
@@ -21,6 +23,13 @@ public class Mouse {
 
     public int GetSymbol(){
         return this.PlayerSymbol;
+    }
+
+    public void SetX(int NewXPos) {
+        this.PositionX = NewXPos;
+    }
+    public void SetY(int NewYPos){
+        this.PositionY = NewYPos;
     }
 
     public void MoveUp(){
