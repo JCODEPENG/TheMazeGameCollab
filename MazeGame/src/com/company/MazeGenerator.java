@@ -1,101 +1,157 @@
 package com.company;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.Stack;
 
 public class MazeGenerator {
-    private int Height = 13;
-    private int Width = 18;
-    private int Maze[][] = new int[15][20];
-    private int WallSymbol = 3;
-    private int PathSymbol = 4;
-    private Stack<Integer> VisitedXCoords = new Stack();
-    private Stack<Integer> VisitedYCoords = new Stack();
+    private static int row = 15;
+    private static int col = 20;
+    private static int[][] maze = new int[col][row];
+    private static Stack<Integer> inCompleteX = new Stack<Integer>();
+    private static Stack<Integer> inCompleteY = new Stack<Integer>();
+    private static ArrayList<Integer> listX = new ArrayList<Integer>();
+    private static ArrayList<Integer> listY = new ArrayList<Integer>();
+    private static int wall = 0;
+    private static int path= 1;
 
-    private void GetRandomNext(int choice, int CurrentXCoord, int CurrentYCoord){
-        switch(choice){
-            case 1:
-                if (CurrentXCoord + 2 <= Width && this.Maze[CurrentYCoord][CurrentXCoord+2] == WallSymbol){
-                    this.Maze[CurrentYCoord][CurrentXCoord+1] = PathSymbol;
-                    this.Maze[CurrentYCoord][CurrentXCoord+2] = PathSymbol;
-                    VisitedXCoords.push(CurrentXCoord + 2);
-                    VisitedYCoords.push(CurrentYCoord);
-                }
-            case 2:
-                if (CurrentXCoord - 2 > 0 && this.Maze[CurrentYCoord][CurrentXCoord-2] == WallSymbol) {
-                    this.Maze[CurrentYCoord][CurrentXCoord - 1] = PathSymbol;
-                    this.Maze[CurrentYCoord][CurrentXCoord - 2] = PathSymbol;
-                    VisitedXCoords.push(CurrentXCoord - 2);
-                    VisitedYCoords.push(CurrentYCoord);
-                }
-            case 3:
-                if (CurrentYCoord + 2 <= Height && this.Maze[CurrentYCoord+2][CurrentXCoord] == WallSymbol) {
-                    this.Maze[CurrentYCoord + 1][CurrentXCoord] = PathSymbol;
-                    this.Maze[CurrentYCoord + 2][CurrentXCoord] = PathSymbol;
-                    VisitedXCoords.push(CurrentXCoord);
-                    VisitedYCoords.push(CurrentYCoord + 2);
-                }
-            case 4:
-                if (CurrentYCoord - 2 > 0 && this.Maze[CurrentYCoord-2][CurrentXCoord] == WallSymbol){
-                    this.Maze[CurrentYCoord-1][CurrentXCoord] = PathSymbol;
-                    this.Maze[CurrentYCoord-2][CurrentXCoord] = PathSymbol;
-                    VisitedXCoords.push(CurrentXCoord);
-                    VisitedYCoords.push(CurrentYCoord - 2);
-                }
-        }
-    }
-
-    public MazeGenerator(){
-        Integer[] intArray = { 1, 2, 3, 4};
-        List<Integer> Choices = Arrays.asList(intArray);
-        this.MazeFill();
-        Random choice = new Random();
-        int StartingPointX = choice.nextInt(Width);
-        int StartingPointY = choice.nextInt(Height);
-        Maze[StartingPointY][StartingPointX] = PathSymbol;
-        VisitedXCoords.push(StartingPointX);
-        VisitedYCoords.push(StartingPointY);
-        while (!VisitedYCoords.isEmpty() && !VisitedXCoords.isEmpty()){
-            int CurrentXCoord = VisitedXCoords.pop();
-            int CurrentYCoord = VisitedYCoords.pop();
-            Collections.shuffle(Choices);
-            for (int pick : Choices){
-                GetRandomNext(pick, CurrentXCoord, CurrentYCoord);
+    public static void main(String[] args){
+        generate();
+        for (int y = 0; y < row; y++){
+            for (int x = 0; x < col; x++){
+                System.out.print(maze[x][y]);
             }
-
-
-
-
-
+            System.out.println("");
         }
+    }
+    public static void generate(){
+        maze[1][1] = path;                //player init
 
+        pushStacks(1, 1);
+        int currentX = 1;
+        int currentY = 1;
+        int next;
+        while (!inCompleteX.empty()) {
+            findNeighbor(currentX, currentY);
+            while (hasNeighbor()) {
+                next = randomNeighbor();
+                makePath(currentX, currentY, next);
+                if (!isComplete()){
+                    pushStacks(currentX, currentY);
+                }
 
+                currentX = listX.get(next);
+                currentY = listY.get(next);
+                findNeighbor(currentX, currentY);
+            }
+            currentX = inCompleteX.pop();
+            currentY = inCompleteY.pop();
+        }
+        maze[col - 2][1] = path;          //top-right cat
+        maze[1][row - 2] = path;          //bottom-left cat
+        maze[col - 2][row - 2] = path;    //bottom-right cat
 
+        for (int i = 0; i < row; i ++){
+            randomRemoveWall();
+        }
     }
 
+    private static void pushStacks(int x, int y){
+        inCompleteX.push(x);
+        inCompleteY.push(y);
+    }
 
+    private static void makePath(int x, int y, int next){
+        int nextX = listX.get(next);
+        int nextY = listY.get(next);
+        int wallX = x - (x - nextX) / 2;
+        int wallY = y - (y - nextY) / 2;
+        maze[wallX][wallY] = path;
+        maze[nextX][nextY] = path;
+    }
 
-    public void MazeFill(){
-        for (int i = 0; i < 15; i++) {
-            for (int j = 0; j < 20; j++) {
-                this.Maze[i][j] = WallSymbol;
-                this.Maze[i][j] = WallSymbol;
+    private static void findNeighbor(int x, int y){
+        listX.clear();
+        listY.clear();
 
+        if (isInBound(x - 2, y) && isWall(x - 2, y)){   // left
+            listX.add(x - 2);
+            listY.add(y);
+        }
+        if (isInBound(x + 2, y) && isWall(x + 2, y)){   //right
+            listX.add(x + 2);
+            listY.add(y);
+        }
+        if (isInBound(x, y + 2) && isWall(x, y + 2)) {   //top
+            listX.add(x);
+            listY.add(y + 2);
+        }
+        if (isInBound(x, y - 2) && isWall(x, y - 2)){   //down
+            listX.add(x);
+            listY.add(y - 2);
+        }
+    }
+
+    private static boolean isComplete(){
+        return (listX.size() == 1);
+    }
+
+    private static boolean hasNeighbor(){
+        return !listX.isEmpty();
+    }
+
+    private static int randomNeighbor(){
+        Random random = new Random();
+        return random.nextInt(listX.size());
+    }
+
+    private static boolean isInBound(int x, int y){
+        if (x < 1 || x > col - 2 || y < 1 || y > row - 2) {
+            return false;
+        }
+        return true;
+    }
+
+    private static boolean isWall(int x, int y){
+        return (maze[x][y] == wall);
+    }
+
+    private static void randomRemoveWall(){
+        Random random = new Random();
+        boolean isRemoved = false;
+
+        while (!isRemoved){
+            int ranX;
+            int ranY;
+            while(true) {
+                ranX = random.nextInt(col);
+                ranY = random.nextInt(row);
+                if (maze[ranX][ranY] == wall){
+                    break;
+                }
+            }
+            boolean left = false;
+            boolean right = false;
+            boolean top = false;
+            boolean down = false;
+
+            if (isInBound(ranX - 1, ranY) && isWall(ranX - 1, ranY)){   // left
+                left = true;
+            }
+            if (isInBound(ranX + 1, ranY) && isWall(ranX + 1, ranY)){   //right
+                right = true;
+            }
+            if (isInBound(ranX, ranY + 1) && isWall(ranX, ranY + 1)) {   //top
+                top = true;
+            }
+            if (isInBound(ranX, ranY - 1) && isWall(ranX, ranY - 1)){   //down
+                down = true;
+            }
+            if ((left || top) && (left || down) && (right || top) && (right || down)){
+                isRemoved = true;
+                maze[ranX][ranY] = path;
+                System.out.println("x: " + ranX + " Y: " + ranY);
             }
         }
     }
-    public void OutputMaze(){
-        for (int i = 0; i < 15; i++){
-            for (int j = 0; j < 20; j++){
-                System.out.print(this.Maze[i][j]);
-            }
-            System.out.println();
-        }
-    }
-
-    public int[][] ReturnMaze(){
-        return this.Maze;
-    }
-
-
-
 }
