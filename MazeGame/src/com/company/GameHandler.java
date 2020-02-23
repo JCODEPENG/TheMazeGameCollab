@@ -8,6 +8,7 @@ public class GameHandler {
     public static void main(String[] args) {
 
         MazeHandler Testing = new MazeHandler();
+        Testing.UpdateExploredRegions();
         boolean Carryon = true;
         Testing.UpdateCheese();
         while (Carryon){
@@ -32,6 +33,7 @@ public class GameHandler {
                     System.out.println("END GAME");
                     break;
                 }
+                Testing.UpdateExploredRegions();
 
             }
 

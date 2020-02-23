@@ -6,12 +6,13 @@ public class MazeHandler {
     private int[][] BaseMaze;
     private int UnexploredRegions[][];
     private Mouse Player = new Mouse(1 ,1 , 4);
-    private Cat Cat1 = new Cat(3, 3, 5);
+    private Cat Cat1 = new Cat(18, 1, 5);
     private Cheese Cheese;
 
 
     public MazeHandler(){
         TemporaryMaze();
+        UnvisitedSpots();
     }
 
     public void UpdatePlayer(int Choice){
@@ -101,6 +102,20 @@ public class MazeHandler {
 
     }
 
+    public void UpdateExploredRegions(){
+        int CurrentX = this.Player.GetX();
+        int CurrentY = this.Player.GetY();
+        UnexploredRegions[CurrentY][CurrentX] = 0;
+        UnexploredRegions[CurrentY][CurrentX+1] = 0;
+        UnexploredRegions[CurrentY][CurrentX-1] = 0;
+        UnexploredRegions[CurrentY+1][CurrentX] = 0;
+        UnexploredRegions[CurrentY-1][CurrentX] = 0;
+        UnexploredRegions[CurrentY-1][CurrentX-1] = 0;
+        UnexploredRegions[CurrentY-1][CurrentX+1] = 0;
+        UnexploredRegions[CurrentY+1][CurrentX-1] = 0;
+        UnexploredRegions[CurrentY+1][CurrentX+1] = 0;
+    }
+
     public boolean CheeseEaten(){
         if (Player.GetX() == Cheese.GetX() && Player.GetY() == Cheese.GetY()){
             return true;
@@ -138,10 +153,28 @@ public class MazeHandler {
         this.BaseMaze[Cat1.GetY()][Cat1.GetX()] = Cat1.GetSymbol();
     }
 
+    public void UnvisitedSpots(){
+        this.UnexploredRegions = new int[][]{
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0},
+                {0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0},
+                {0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0},
+                {0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0},
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
+        };
+    }
+
     public void tmpPrint(){
         for (int i = 0; i < 6; i++){
             for (int j = 0; j < 20; j++){
                 System.out.print( this.BaseMaze[i][j]);
+            }
+            System.out.println();
+        }
+        System.out.println();
+        for (int i = 0; i < 6; i++){
+            for (int j = 0; j < 20; j++){
+                System.out.print( this.UnexploredRegions[i][j]);
             }
             System.out.println();
         }
