@@ -1,12 +1,9 @@
 package com.company;
-
 public class GameHandler {
 
     public static void main(String[] args) {
-        MazeGenerator Maze = new MazeGenerator();
-
-        Maze.OutputMaze();
-
-
+        MazeGenerator maze = new MazeGenerator(15, 20);
+        maze.generate();
+        maze.outputMaze();
     }
 }
