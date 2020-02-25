@@ -26,7 +26,10 @@ public class UserInput {
         }
     }
 
-    public char ReturnInputKey(){
-        return this.InputKey;
+    public int ReturnInputKey(){
+        if (this.InputKey == 'w'){
+            return 1;
+        }
+
     }
 }

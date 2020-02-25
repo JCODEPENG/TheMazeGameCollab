@@ -4,11 +4,13 @@ import java.util.Scanner;
 
 public class GameHandler {
     private static int CheeseCollected = 0;
+    private static int TotalCheeseNeeded = 5;
 
+    public void InterpretInput(int )
     public static void main(String[] args) {
-        DisplayOutput test = new DisplayOutput();
-        test.WelcomeMsg();
-        test.HelpMsg();
+        DisplayOutput PrintToScreen = new DisplayOutput();
+        PrintToScreen.WelcomeMsg();
+        PrintToScreen.HelpMsg();
         MazeHandler Testing = new MazeHandler();
         Testing.UpdateExploredRegions();
         boolean CarryOn = true;
@@ -26,9 +28,8 @@ public class GameHandler {
                 Testing.UpdatePlayer(Key);
                 Testing.UpdateCat();
                 if (Testing.CheeseEaten()){
-
                     CheeseCollected++;
-                    System.out.println("Number of Cheese eaten: " + CheeseCollected);
+                    PrintToScreen.CheeseCollected();
                     Testing.UpdateCheese();
                 }
                 if (Testing.PlayerEaten()){
