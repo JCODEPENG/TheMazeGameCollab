@@ -23,6 +23,7 @@ public class MazeGenerator{
         this.inCompleteY = new Stack<Integer>();
         this.listX = new ArrayList<Integer>();
         this.listY = new ArrayList<Integer>();
+        generate();
         }
 
     public void generate(){
@@ -157,7 +158,6 @@ public class MazeGenerator{
     }
 
     public int[][] getMaze(){
-        generate();
         return maze;
     }
 }
