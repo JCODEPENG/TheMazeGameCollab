@@ -11,6 +11,8 @@ public class Mouse {
         this.PlayerSymbol = Symbol;
     }
 
+
+
     public int GetX(){
         return this.PositionX;
     }
@@ -23,8 +25,15 @@ public class Mouse {
         return this.PlayerSymbol;
     }
 
+    public void SetX(int NewXPos) {
+        this.PositionX = NewXPos;
+    }
+    public void SetY(int NewYPos){
+        this.PositionY = NewYPos;
+    }
+
     public void MoveUp(){
-        this.PositionY = this.PositionY - 1;
+        this.PositionY = this.PositionY -1;
         System.out.println("postiony is now "+ this.PositionY );
     }
 
@@ -32,6 +41,7 @@ public class Mouse {
         this.PositionY = this.PositionY + 1;
         System.out.println("postiony is now "+  this.PositionY );
     }
+
 
     public void MoveRight(){
         this.PositionX = this.PositionX + 1;
