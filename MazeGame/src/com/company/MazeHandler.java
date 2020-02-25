@@ -125,6 +125,7 @@ public class MazeHandler {
 
     public boolean PlayerEaten(){
         if (Cat1.GetX() == Player.GetX() && Cat1.GetY() == Player.GetY()){
+            this.BaseMaze[Cat1.GetY()][Cat1.GetX()] = 7;
             return true;
         }
         return false;
