@@ -12,8 +12,8 @@ public class MazeGenerator{
     private Stack<Integer> inCompleteY;
     private ArrayList<Integer> listX;
     private ArrayList<Integer> listY;
-    private int wall;
-    private int path;
+    private int wall = 0;
+    private int path = 1;
 
     public MazeGenerator(int row, int col){
         this.row = row;
@@ -23,18 +23,16 @@ public class MazeGenerator{
         this.inCompleteY = new Stack<Integer>();
         this.listX = new ArrayList<Integer>();
         this.listY = new ArrayList<Integer>();
-        this.wall = 0;
-        this.path = 1;
         }
 
     public void generate(){
-        this.maze[1][1] = this.path;                //player init
+        maze[1][1] = path;                //player init
 
         pushStacks(1, 1);
         int currentX = 1;
         int currentY = 1;
         int next;
-        while (!this.inCompleteX.empty()) {
+        while (!inCompleteX.empty()) {
             findNeighbor(currentX, currentY);
             while (hasNeighbor()) {
                 next = randomNeighbor();
@@ -43,80 +41,80 @@ public class MazeGenerator{
                     pushStacks(currentX, currentY);
                 }
 
-                currentX = this.listX.get(next);
-                currentY = this.listY.get(next);
+                currentX = listX.get(next);
+                currentY = listY.get(next);
                 findNeighbor(currentX, currentY);
             }
-            currentX = this.inCompleteX.pop();
-            currentY = this.inCompleteY.pop();
+            currentX = inCompleteX.pop();
+            currentY = inCompleteY.pop();
         }
-        this.maze[this.col - 2][1] = this.path;          //top-right cat
-        this.maze[1][this.row - 2] = this.path;          //bottom-left cat
-        this.maze[this.col - 2][this.row - 2] = this.path;    //bottom-right cat
+        maze[col - 2][1] = path;          //top-right cat
+        maze[1][row - 2] = path;          //bottom-left cat
+        maze[col - 2][row - 2] = path;    //bottom-right cat
 
-        for (int i = 0; i < this.row; i ++){
+        for (int i = 0; i < row; i ++){
             randomRemoveWall();
         }
     }
 
     private void pushStacks(int x, int y){
-        this.inCompleteX.push(x);
-        this.inCompleteY.push(y);
+        inCompleteX.push(x);
+        inCompleteY.push(y);
     }
 
     private void makePath(int x, int y, int next){
-        int nextX = this.listX.get(next);
-        int nextY = this.listY.get(next);
+        int nextX = listX.get(next);
+        int nextY = listY.get(next);
         int wallX = x - (x - nextX) / 2;
         int wallY = y - (y - nextY) / 2;
-        this.maze[wallX][wallY] = this.path;
-        this.maze[nextX][nextY] = this.path;
+        maze[wallX][wallY] = path;
+        maze[nextX][nextY] = path;
     }
 
     private void findNeighbor(int x, int y){
-        this.listX.clear();
-        this.listY.clear();
+        listX.clear();
+        listY.clear();
 
         if (isInBound(x - 2, y) && isWall(x - 2, y)){   // left
-            this.listX.add(x - 2);
-            this.listY.add(y);
+            listX.add(x - 2);
+            listY.add(y);
         }
         if (isInBound(x + 2, y) && isWall(x + 2, y)){   //right
-            this.listX.add(x + 2);
-            this.listY.add(y);
+            listX.add(x + 2);
+            listY.add(y);
         }
         if (isInBound(x, y + 2) && isWall(x, y + 2)) {   //top
-            this.listX.add(x);
-            this.listY.add(y + 2);
+            listX.add(x);
+            listY.add(y + 2);
         }
         if (isInBound(x, y - 2) && isWall(x, y - 2)){   //down
-            this.listX.add(x);
-            this.listY.add(y - 2);
+            listX.add(x);
+            listY.add(y - 2);
         }
     }
 
     private boolean isComplete(){
-        return (this.listX.size() == 1);
+        return (listX.size() == 1);
     }
 
     private boolean hasNeighbor(){
-        return !this.listX.isEmpty();
+        return !listX.isEmpty();
     }
 
     private int randomNeighbor(){
         Random random = new Random();
-        return random.nextInt(this.listX.size());
+        return random.nextInt(listX.size());
     }
 
     private  boolean isInBound(int x, int y){
-        if (x < 1 || x > this.col - 2 || y < 1 || y > this.row - 2) {
+        if (x < 1 || x > col - 2 || y < 1 || y > row - 2) {
             return false;
         }
         return true;
     }
 
     private boolean isWall(int x, int y){
-        return (this.maze[x][y] == this.wall);
+        return (maze[x][y] == wall);
     }
 
     private void randomRemoveWall(){
@@ -127,9 +125,9 @@ public class MazeGenerator{
             int ranX;
             int ranY;
             while(true) {
-                ranX = random.nextInt(this.col);
-                ranY = random.nextInt(this.row);
-                if (this.maze[ranX][ranY] == this.wall){
+                ranX = random.nextInt(col);
+                ranY = random.nextInt(row);
+                if (maze[ranX][ranY] == wall){
                     break;
                 }
             }
@@ -152,18 +150,14 @@ public class MazeGenerator{
             }
             if ((left || top) && (left || down) && (right || top) && (right || down)){
                 isRemoved = true;
-                this.maze[ranX][ranY] = this.path;
+                maze[ranX][ranY] = path;
 //                System.out.println("x: " + ranX + " Y: " + ranY);
             }
         }
     }
 
-    public void outputMaze(){
-        for (int y = 0; y < this.row; y++){
-            for (int x = 0; x < this.col; x++){
-                System.out.print(this.maze[x][y]);
-            }
-            System.out.println("");
-        }
+    public int[][] getMaze(){
+        generate();
+        return maze;
     }
 }
