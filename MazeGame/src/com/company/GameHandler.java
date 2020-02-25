@@ -9,9 +9,9 @@ public class GameHandler {
 
         MazeHandler Testing = new MazeHandler();
         Testing.UpdateExploredRegions();
-        boolean Carryon = true;
+        boolean CarryOn = true;
         Testing.UpdateCheese();
-        while (Carryon){
+        while (CarryOn){
             Testing.tmpPrint();
             System.out.println("Input Key: ");
             Scanner Input = new Scanner(System.in);
