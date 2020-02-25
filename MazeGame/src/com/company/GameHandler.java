@@ -6,7 +6,9 @@ public class GameHandler {
     private static int CheeseCollected = 0;
 
     public static void main(String[] args) {
-
+        DisplayOutput test = new DisplayOutput();
+        test.WelcomeMsg();
+        test.HelpMsg();
         MazeHandler Testing = new MazeHandler();
         Testing.UpdateExploredRegions();
         boolean CarryOn = true;
