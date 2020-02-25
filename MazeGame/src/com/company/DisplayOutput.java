@@ -33,7 +33,7 @@ public class DisplayOutput {
 
     }
 
-    public void hitWallMsg(){
+    public void WelcomeMsg(){
         System.out.println("----------------------------------------");
         System.out.println("Welcome to Cat and Mouse Maze Adventure!\n By Joshua Peng and Jocelyn Gau");
         System.out.println("----------------------------------------");
