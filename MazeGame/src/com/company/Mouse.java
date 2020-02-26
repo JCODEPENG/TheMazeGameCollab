@@ -1,55 +1,51 @@
 package com.company;
 
 public class Mouse {
-    private int PositionX;
-    private int PositionY;
-    private int PlayerSymbol;
+    private int positionX;
+    private int positionY;
+    private int playerSymbol;
 
-    public Mouse(int PosX, int PosY, int Symbol){
-        this.PositionX = PosX;
-        this.PositionY = PosY;
-        this.PlayerSymbol = Symbol;
+    public Mouse(int posX, int posY, int symbol){
+        this.positionX = posX;
+        this.positionY = posY;
+        this.playerSymbol = symbol;
     }
 
 
 
     public int GetX(){
-        return this.PositionX;
+        return this.positionX;
     }
 
     public int GetY(){
-        return this.PositionY;
+        return this.positionY;
     }
 
     public int GetSymbol(){
-        return this.PlayerSymbol;
+        return this.playerSymbol;
     }
 
     public void SetX(int NewXPos) {
-        this.PositionX = NewXPos;
+        this.positionX = NewXPos;
     }
     public void SetY(int NewYPos){
-        this.PositionY = NewYPos;
+        this.positionY = NewYPos;
     }
 
     public void MoveUp(){
-        this.PositionY = this.PositionY -1;
-        System.out.println("postiony is now "+ this.PositionY );
+        this.positionY = this.positionY -1;
     }
 
     public void MoveDown(){
-        this.PositionY = this.PositionY + 1;
-        System.out.println("postiony is now "+  this.PositionY );
+        this.positionY = this.positionY + 1;
     }
 
 
     public void MoveRight(){
-        this.PositionX = this.PositionX + 1;
-        System.out.println("postionx is now "+ this.PositionX );
+        this.positionX = this.positionX + 1;
     }
 
     public void MoveLeft(){
-        this.PositionX = this.PositionX - 1;
-        System.out.println("postionx is now "+ this.PositionX );
+        this.positionX = this.positionX - 1;
     }
 }
