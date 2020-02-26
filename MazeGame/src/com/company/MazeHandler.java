@@ -26,6 +26,7 @@ public class MazeHandler {
        unvisitedSpots(col, row);
        this.player = new Mouse(1 ,1 , PLAYER_SYMBOL);
        this.baseMaze[player.getY()][player.getX()] = player.getSymbol();
+       updateCheese();
        this.cats = new ArrayList<Cat>();
        initCatList();
     }

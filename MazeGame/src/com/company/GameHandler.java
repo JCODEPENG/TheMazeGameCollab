@@ -73,7 +73,6 @@ public class GameHandler {
         UserInput InputKey = new UserInput();
         DisplayOutput PrintToScreen = new DisplayOutput();
         MazeHandler Testing = new MazeHandler();
-        Testing.updateCheese();
         boolean CarryOn = true;
         PrintToScreen.welcomeMsg();
         PrintToScreen.helpMsg();
