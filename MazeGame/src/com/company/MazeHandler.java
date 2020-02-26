@@ -98,14 +98,14 @@ public class MazeHandler {
         Random random = new Random();
         boolean CarryOn = true;
         while (CarryOn){
-            int randomX = random.nextInt(15);
-            int randomY = random.nextInt(6);
-            if (baseMaze[randomY][randomX] == player.GetSymbol() || isWall(randomX,randomY)){
+            int randomX = random.nextInt(col);
+            int randomY = random.nextInt(row);
+            if (baseMaze[randomX][randomY] == PLAYER_SYMBOL || isWall(randomX,randomY)){
                 CarryOn = true;
             }
             else{
                 cheese = new Cheese(randomX,randomY, CHEESE_SYMBOL);
-                baseMaze[randomY][randomX] = cheese.GetSymbol();
+                baseMaze[randomX][randomY] = cheese.GetSymbol();
                 CarryOn = false;
             }
         }
@@ -136,7 +136,7 @@ public class MazeHandler {
     public boolean playerEaten() {
         for (Cat cat : cats) {
             if (cat.getX() == player.getX() && cat.getY() == player.getY()) {
-                this.baseMaze[cat.getY()][cat.getX()] = 7;
+                this.baseMaze[cat.getX()][cat.getY()] = 7;
                 return true;
             }
 
