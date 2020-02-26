@@ -10,8 +10,8 @@ public class MazeGenerator{
     private int[][] maze;
     private Stack<Integer> inCompleteX;
     private Stack<Integer> inCompleteY;
-    private ArrayList<Integer> listX;
-    private ArrayList<Integer> listY;
+    private ArrayList<Integer> neighborX;
+    private ArrayList<Integer> neighborY;
     private int wall = 0;
     private int path = 1;
 
@@ -21,10 +21,10 @@ public class MazeGenerator{
         this.maze = new int[col][row];
         this.inCompleteX = new Stack<Integer>();
         this.inCompleteY = new Stack<Integer>();
-        this.listX = new ArrayList<Integer>();
-        this.listY = new ArrayList<Integer>();
+        this.neighborX = new ArrayList<Integer>();
+        this.neighborY = new ArrayList<Integer>();
         generate();
-        }
+    }
 
     public void generate(){
         maze[1][1] = path;                //player init
@@ -42,8 +42,8 @@ public class MazeGenerator{
                     pushStacks(currentX, currentY);
                 }
 
-                currentX = listX.get(next);
-                currentY = listY.get(next);
+                currentX = neighborX.get(next);
+                currentY = neighborY.get(next);
                 findNeighbor(currentX, currentY);
             }
             currentX = inCompleteX.pop();
@@ -58,14 +58,23 @@ public class MazeGenerator{
         }
     }
 
+    public boolean isWall(int x, int y){
+        return (maze[x][y] == wall);
+    }
+
+    public int[][] getMaze(){
+        return maze;
+    }
+
+
     private void pushStacks(int x, int y){
         inCompleteX.push(x);
         inCompleteY.push(y);
     }
 
     private void makePath(int x, int y, int next){
-        int nextX = listX.get(next);
-        int nextY = listY.get(next);
+        int nextX = neighborX.get(next);
+        int nextY = neighborY.get(next);
         int wallX = x - (x - nextX) / 2;
         int wallY = y - (y - nextY) / 2;
         maze[wallX][wallY] = path;
@@ -73,38 +82,38 @@ public class MazeGenerator{
     }
 
     private void findNeighbor(int x, int y){
-        listX.clear();
-        listY.clear();
+        neighborX.clear();
+        neighborY.clear();
 
         if (isInBound(x - 2, y) && isWall(x - 2, y)){   // left
-            listX.add(x - 2);
-            listY.add(y);
+            neighborX.add(x - 2);
+            neighborY.add(y);
         }
         if (isInBound(x + 2, y) && isWall(x + 2, y)){   //right
-            listX.add(x + 2);
-            listY.add(y);
+            neighborX.add(x + 2);
+            neighborY.add(y);
         }
         if (isInBound(x, y + 2) && isWall(x, y + 2)) {   //top
-            listX.add(x);
-            listY.add(y + 2);
+            neighborX.add(x);
+            neighborY.add(y + 2);
         }
         if (isInBound(x, y - 2) && isWall(x, y - 2)){   //down
-            listX.add(x);
-            listY.add(y - 2);
+            neighborX.add(x);
+            neighborY.add(y - 2);
         }
     }
 
     private boolean isComplete(){
-        return (listX.size() == 1);
+        return (neighborX.size() == 1);
     }
 
     private boolean hasNeighbor(){
-        return !listX.isEmpty();
+        return !neighborX.isEmpty();
     }
 
     private int randomNeighbor(){
         Random random = new Random();
-        return random.nextInt(listX.size());
+        return random.nextInt(neighborX.size());
     }
 
     private  boolean isInBound(int x, int y){
@@ -112,10 +121,6 @@ public class MazeGenerator{
             return false;
         }
         return true;
-    }
-
-    public boolean isWall(int x, int y){
-        return (maze[x][y] == wall);
     }
 
     private void randomRemoveWall(){
@@ -157,7 +162,5 @@ public class MazeGenerator{
         }
     }
 
-    public int[][] getMaze(){
-        return maze;
-    }
+
 }
