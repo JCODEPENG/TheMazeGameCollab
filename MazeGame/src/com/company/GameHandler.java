@@ -3,21 +3,22 @@ package com.company;
 import java.util.Scanner;
 
 public class GameHandler {
-    private static int CheeseCollected = 0;
-    private static int TotalCheeseNeeded = 5;
+    private static int cheeseCollected = 0;
+    private static int totalCheeseNeeded = 5;
+    private static boolean revealMaze = false;
 
-    private int[][] outputMaze = new int[20][15];
+    private int[][] outputMaze = new int[15][20];
 
-    public static void InterpretInput(int Choice, MazeHandler CurrentGame){
+    public static void InterpretInput(int Choice, MazeHandler CurrentGame, GameHandler Organizer){
 
         if (Choice == 1 || Choice == 2 || Choice == 3 || Choice == 4){
             CurrentGame.updatePlayer(Choice);
         }
         if (Choice == 5){
-            //return the maze
+            revealMaze = true;
         }
         if (Choice == 6){
-            TotalCheeseNeeded = 1;
+            totalCheeseNeeded = 1;
         }
     }
 
@@ -26,7 +27,7 @@ public class GameHandler {
         int[][] Unexplored = TwoMazes.returnUnexploredRegion();
         for (int i = 0; i < 15; i++){
             for (int j = 0; j < 20; j++){
-                if (Unexplored[i][j] == 1) {
+                if (Unexplored[i][j] == TwoMazes.returnUnexploredSymbol()) {
                     outputMaze[i][j] = Unexplored[i][j];
                 }
                 else{
@@ -38,10 +39,10 @@ public class GameHandler {
     }
 
     public boolean checkGameState(DisplayOutput PrintToScreen, GameHandler Organizer, MazeHandler MazeCheck){
-        if (CheeseCollected == TotalCheeseNeeded){
+        if (cheeseCollected == totalCheeseNeeded){
             PrintToScreen.WinMsg();
             PrintToScreen.OutputMaze(MazeCheck.returnBaseMaze());
-            PrintToScreen.CheeseCollected(CheeseCollected,TotalCheeseNeeded);
+            PrintToScreen.CheeseCollected(cheeseCollected,totalCheeseNeeded);
             return true;
         }
         if (MazeCheck.playerEaten()){
@@ -58,30 +59,27 @@ public class GameHandler {
         UserInput InputKey = new UserInput();
         DisplayOutput PrintToScreen = new DisplayOutput();
         MazeHandler Testing = new MazeHandler();
+        Testing.updateCheese();
         boolean CarryOn = true;
-
         PrintToScreen.WelcomeMsg();
         PrintToScreen.HelpMsg();
-
-
-
         Testing.updateExploredRegions();
-
-
         while (CarryOn){
             Testing.updateExploredRegions();
             Organizer.CombineMaze(Testing);
+            if(revealMaze == false) {
+                PrintToScreen.OutputMaze(Organizer.outputMaze);
+            }
+            else{
+                PrintToScreen.OutputMaze(Testing.returnBaseMaze());
+            }
+            PrintToScreen.CheeseCollected(cheeseCollected,totalCheeseNeeded);
+            PrintToScreen.GetInputMsg();
             InputKey.GetInputKey();
-            PrintToScreen.OutputMaze(Organizer.outputMaze);
             int Key = InputKey.ReturnInputKey();
-
-
-
-            InterpretInput(Key, Testing);
-            Testing.updateCat();
+            InterpretInput(Key, Testing, Organizer);
             if (Testing.cheeseEaten()){
-                CheeseCollected++;
-                PrintToScreen.CheeseCollected(CheeseCollected,TotalCheeseNeeded);
+                cheeseCollected++;
                 Testing.updateCheese();
             }
             if (Organizer.checkGameState(PrintToScreen, Organizer, Testing)){

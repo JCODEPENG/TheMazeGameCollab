@@ -6,29 +6,30 @@ public class DisplayOutput {
         int[] YDimension = Maze[0];
         int YSize = YDimension.length;
         int XSize = Maze.length;
-        for  (int i = 0; i < YSize; i++){
-            for (int j = 0; j < XSize; j++){
-                if (Maze[i][j] == 1){
-                    System.out.println('.');
+        for  (int i = 0; i < 15; i++){
+            for (int j = 0; j < 20; j++){
+                if (Maze[i][j] == 0){
+                    System.out.print('#');
                 }
-                if (Maze[i][j] == 2){
-                    System.out.println(' ');
+                if (Maze[i][j] == 1){
+                    System.out.print(' ');
                 }
                 if (Maze[i][j] == 3){
-                    System.out.println('#');
+                    System.out.print('.');
                 }
                 if(Maze[i][j] == 4){
-                    System.out.println('@');
+                    System.out.print('@');
                 }
                 if (Maze[i][j] == 5){
-                    System.out.println('!');
+                    System.out.print('!');
                 }
                 if (Maze[i][j] == 6){
-                    System.out.println('$');
+                    System.out.print('$');
                 }
                 if (Maze[i][j] == 7){
-                    System.out.println('X');
+                    System.out.print('X');
                 }
+
             }
             System.out.println();
         }

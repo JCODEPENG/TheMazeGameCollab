@@ -7,7 +7,6 @@ public class UserInput {
     private char InputKey;
 
     public void GetInputKey(){
-        System.out.println("Input Key: ");
         Scanner Input = new Scanner(System.in);
         char Key = Input.next().charAt(0);
         if (Key == 'w'){
