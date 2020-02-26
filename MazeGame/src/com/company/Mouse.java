@@ -11,8 +11,6 @@ public class Mouse {
         this.playerSymbol = symbol;
     }
 
-
-
     public int getX(){
         return this.positionX;
     }
@@ -32,21 +30,6 @@ public class Mouse {
         this.positionY = NewYPos;
     }
 
-//    public void MoveUp(){
-//        this.positionY = this.positionY -1;
-//    }
-//
-//    public void MoveDown(){
-//        this.positionY = this.positionY + 1;
-//    }
-//
-//    public void MoveRight(){
-//        this.positionX = this.positionX + 1;
-//    }
-//
-//    public void MoveLeft(){
-//        this.positionX = this.positionX - 1;
-//    }
     public void move(int newX, int newY){
         positionX = newX;
         positionY = newY;
