@@ -12,24 +12,22 @@ public class UserInput {
         if (Key == 'w'){
            this.InputKey = Key;
         }
-        else if (Key == 'a'){
+        if (Key == 'a'){
             this.InputKey = Key;
         }
-        else if (Key == 's'){
+        if (Key == 's'){
             this.InputKey = Key;
         }
-        else if(Key == 'd'){
+        if(Key == 'd'){
             this.InputKey = Key;
         }
-        else if (Key == 'm'){
+        if (Key == 'm'){
             this.InputKey = Key;
         }
-        else if (Key == 'c'){
+        if (Key == 'c'){
             this.InputKey = Key;
         }
-        else{
-            //PrintErrorMessage()
-        }
+
     }
 
     public int ReturnInputKey(){

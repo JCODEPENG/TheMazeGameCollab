@@ -22,10 +22,7 @@ public class MazeHandler {
 
     public MazeHandler(){
        this.maze = new MazeGenerator(col, row);
-
-
        this.baseMaze = maze.getMaze();
-
        unvisitedSpots(col, row);
        this.player = new Mouse(1 ,1 , PLAYER_SYMBOL);
        this.baseMaze[player.getY()][player.getX()] = player.getSymbol();
@@ -86,9 +83,17 @@ public class MazeHandler {
                 }
             }
             choice = random.nextInt(choiceX.size());
-            setSymbol(cat.getY(), cat.getX(), PATH_SYMBOL);
-            cat.move(choiceX.get(choice), choiceY.get(choice));
-            setSymbol(cat.getY(), cat.getX(), CAT_SYMBOL);
+            if(catOnCheese(cat.getX(), cat.getY())){
+                setSymbol(cat.getY(), cat.getX(), CHEESE_SYMBOL);
+                cat.move(choiceX.get(choice), choiceY.get(choice));
+                setSymbol(cat.getY(), cat.getX(), CAT_SYMBOL);
+            }
+            else{
+                setSymbol(cat.getY(), cat.getX(), PATH_SYMBOL);
+                cat.move(choiceX.get(choice), choiceY.get(choice));
+                setSymbol(cat.getY(), cat.getX(), CAT_SYMBOL);
+            }
+
             if (cat.getX() == cat.getLastX() && cat.getY() == cat.getLastY()){
                 cat.setBackTrace(true);
             } else{
@@ -97,7 +102,6 @@ public class MazeHandler {
 
         }
     }
-
 
     public void updateCheese(){
 
@@ -172,10 +176,17 @@ public class MazeHandler {
         return false;
     }
 
+    public boolean catOnCheese(int getX, int getY){
+        if (getX == cheese.getX() && getY == cheese.getY()) {
+            return true;
+        }
+
+        return false;
+    }
+
     public boolean isWall(int PosX, int PosY){
         return maze.isWall(PosX, PosY);
     }
-
 
     public void unvisitedSpots(int y, int x){
         this.unexploredRegion = new int[col][row];

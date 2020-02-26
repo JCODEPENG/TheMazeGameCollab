@@ -12,8 +12,14 @@ public class GameHandler {
     public static boolean InterpretInput(int Choice, MazeHandler CurrentGame){
 
         if (Choice == 1 || Choice == 2 || Choice == 3 || Choice == 4){
-            CurrentGame.updatePlayer(Choice);
-            return true;
+            boolean Updated = CurrentGame.updatePlayer(Choice);
+            if(!Updated) {
+                DisplayOutput.invalidMoveMsg();
+                return false;
+            }
+            else{
+                return true;
+            }
         }
         else if (Choice == 5){
             revealMaze = true;
@@ -86,12 +92,12 @@ public class GameHandler {
             InputKey.GetInputKey();
             int Key = InputKey.ReturnInputKey();
             if(InterpretInput(Key, Testing)){
+                if (Organizer.checkGameState(PrintToScreen, Organizer, Testing)){
+                    break;
+                }
                 if (Testing.cheeseEaten()){
                     cheeseCollected++;
                     Testing.updateCheese();
-                }
-                if (Organizer.checkGameState(PrintToScreen, Organizer, Testing)){
-                    break;
                 }
                 Testing.updateCat();
                 if (Organizer.checkGameState(PrintToScreen, Organizer, Testing)){

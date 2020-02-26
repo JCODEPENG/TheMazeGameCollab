@@ -63,7 +63,7 @@ public class DisplayOutput {
     public void WinMsg(){
         System.out.println("Congratulations! You won!");
     }
-    public static void InvalidMoveMsg(){
+    public static void invalidMoveMsg(){
         System.out.println("Invalid move: you cannot move through walls!");
     }
 
