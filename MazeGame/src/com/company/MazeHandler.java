@@ -1,7 +1,6 @@
 package com.company;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class MazeHandler {
@@ -9,7 +8,7 @@ public class MazeHandler {
     private int unexploredRegion[][];
     private MazeGenerator maze;
     private Mouse player;
-    private List<Cat> cats;
+    private ArrayList<Cat> cats;
     private Cheese cheese;
     private int col = 20;
     private int row = 15;
@@ -33,6 +32,7 @@ public class MazeHandler {
        this.baseMaze = maze.getMaze();
        unvisitedSpots(col, row);
        this.player = new Mouse(1 ,1 , PLAYER_SYMBOL);
+       this.cats = new ArrayList<Cat>();
        initCatList();
     }
 
