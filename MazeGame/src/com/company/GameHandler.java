@@ -9,17 +9,24 @@ public class GameHandler {
 
     private int[][] outputMaze = new int[15][20];
 
-    public static void InterpretInput(int Choice, MazeHandler CurrentGame, GameHandler Organizer){
+    public static boolean InterpretInput(int Choice, MazeHandler CurrentGame){
 
         if (Choice == 1 || Choice == 2 || Choice == 3 || Choice == 4){
             CurrentGame.updatePlayer(Choice);
+            return true;
         }
-        if (Choice == 5){
+        else if (Choice == 5){
             revealMaze = true;
         }
-        if (Choice == 6){
+        else if (Choice == 6){
             totalCheeseNeeded = 1;
         }
+        else{
+            DisplayOutput.invalidInput();
+        }
+
+        return false;
+
     }
 
     public void CombineMaze(MazeHandler TwoMazes){
@@ -27,11 +34,12 @@ public class GameHandler {
         int[][] Unexplored = TwoMazes.returnUnexploredRegion();
         for (int i = 0; i < 15; i++){
             for (int j = 0; j < 20; j++){
-                if (Unexplored[i][j] == TwoMazes.returnUnexploredSymbol()) {
-                    outputMaze[i][j] = Unexplored[i][j];
+                if (BaseMaze[i][j] == TwoMazes.returnCatSymbol() || BaseMaze[i][j] == TwoMazes.returnPlayerSymbol() || BaseMaze[i][j] == TwoMazes.returnCheeseSymbol()
+                        || Unexplored[i][j] == TwoMazes.returnExploredSymbol()) {
+                    outputMaze[i][j] = BaseMaze[i][j];
                 }
                 else{
-                    outputMaze[i][j] = BaseMaze[i][j];
+                    outputMaze[i][j] = Unexplored[i][j];
                 }
             }
         }
@@ -47,7 +55,7 @@ public class GameHandler {
         }
         if (MazeCheck.playerEaten()){
             PrintToScreen.gotEatenMsg();
-            PrintToScreen.OutputMaze(Organizer.outputMaze);
+            PrintToScreen.OutputMaze(MazeCheck.returnBaseMaze());
             PrintToScreen.gameOverMsg();
             return true;
         }
@@ -77,14 +85,20 @@ public class GameHandler {
             PrintToScreen.GetInputMsg();
             InputKey.GetInputKey();
             int Key = InputKey.ReturnInputKey();
-            InterpretInput(Key, Testing, Organizer);
-            if (Testing.cheeseEaten()){
-                cheeseCollected++;
-                Testing.updateCheese();
+            if(InterpretInput(Key, Testing)){
+                if (Testing.cheeseEaten()){
+                    cheeseCollected++;
+                    Testing.updateCheese();
+                }
+                if (Organizer.checkGameState(PrintToScreen, Organizer, Testing)){
+                    break;
+                }
+                Testing.updateCat();
+                if (Organizer.checkGameState(PrintToScreen, Organizer, Testing)){
+                    break;
+                }
             }
-            if (Organizer.checkGameState(PrintToScreen, Organizer, Testing)){
-                break;
-            }
+
 
         }
 

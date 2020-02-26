@@ -20,17 +20,6 @@ public class MazeHandler {
     private final int CHEESE_SYMBOL = 6;
     private final int DEATH_SYMBOL = 7;
 
-//    public static void main(String[] args) {
-//        MazeGenerator maze = new MazeGenerator(15, 20);
-//        int[][] Maze = maze.getMaze();
-//        for (int y = 0; y < 15; y++){
-//            for (int x = 0; x < 20; x++){
-//                System.out.print(Maze[y][x]);
-//            }
-//            System.out.println();
-//        }
-//    }
-
     public MazeHandler(){
        this.maze = new MazeGenerator(col, row);
 
@@ -38,7 +27,6 @@ public class MazeHandler {
        this.baseMaze = maze.getMaze();
 
        unvisitedSpots(col, row);
-       printUMaze();
        this.player = new Mouse(1 ,1 , PLAYER_SYMBOL);
        this.baseMaze[player.getY()][player.getX()] = player.getSymbol();
        this.cats = new ArrayList<Cat>();
@@ -50,10 +38,10 @@ public class MazeHandler {
         int nextX = direction(choice)[0] + player.getX();
         int nextY = direction(choice)[1] + player.getY();
 
-        if (!isWall(nextX, nextY)){
-            setSymbol(player.getX(), player.getY(), PATH_SYMBOL);
+        if (!isWall(nextY, nextX)){
+            setSymbol(player.getY(), player.getX(), PATH_SYMBOL);
             player.move(nextX, nextY);
-            setSymbol(player.getX(), player.getY(), PLAYER_SYMBOL);
+            setSymbol(player.getY(), player.getX(), PLAYER_SYMBOL);
             return true;
         }
         return false;
@@ -64,18 +52,18 @@ public class MazeHandler {
     private int[] direction(int choice){
         switch(choice){
             case(1):    //up
-                return new int[]{-1, 0};
-            case(2):    //left
                 return new int[]{0, -1};
+            case(2):    //left
+                return new int[]{-1, 0};
             case(3):    //down
-                return new int[]{1, 0};
-            case(4):    //right
                 return new int[]{0, 1};
+            case(4):    //right
+                return new int[]{1, 0};
             default:
                 return new int[]{0, 0,};
         }
     }
-/*
+
     public void updateCat(){
 
         ArrayList<Integer> choiceX = new ArrayList<Integer>();
@@ -84,8 +72,6 @@ public class MazeHandler {
         Random random = new Random();
 
         for (Cat cat : cats){
-            System.out.println(cat.getX() + "cat was that and player is" + player.getX() + " ");
-            System.out.println(cat.getY() + "cat was that and player is" + player.getY() + " ");
             choiceX.clear();
             choiceY.clear();
             cat.setLastX(cat.getX());
@@ -100,9 +86,9 @@ public class MazeHandler {
                 }
             }
             choice = random.nextInt(choiceX.size());
-            setSymbol(cat.getX(), cat.getY(), PATH_SYMBOL);
+            setSymbol(cat.getY(), cat.getX(), PATH_SYMBOL);
             cat.move(choiceX.get(choice), choiceY.get(choice));
-            setSymbol(cat.getX(), cat.getY(), CAT_SYMBOL);
+            setSymbol(cat.getY(), cat.getX(), CAT_SYMBOL);
             if (cat.getX() == cat.getLastX() && cat.getY() == cat.getLastY()){
                 cat.setBackTrace(true);
             } else{
@@ -110,9 +96,8 @@ public class MazeHandler {
             }
 
         }
-       // printMaze();
     }
-*/
+
 
     public void updateCheese(){
 
@@ -141,28 +126,36 @@ public class MazeHandler {
     public int[][] returnUnexploredRegion(){
         return this.unexploredRegion;
     }
-    public int returnUnexploredSymbol(){
-        return UNEXPLORED_REGION;
+
+    public int returnPlayerSymbol(){
+        return PLAYER_SYMBOL;
+    }
+    public int returnCheeseSymbol(){
+        return CHEESE_SYMBOL;
+    }
+    public int returnCatSymbol(){
+        return CAT_SYMBOL;
+    }
+    public int returnExploredSymbol(){
+        return EXPLORED_REGION;
     }
 
     public void updateExploredRegions(){
         int currentX = this.player.getX();
         int currentY = this.player.getY();
-        unexploredRegion[currentX][currentY] = EXPLORED_REGION;       //current
-        unexploredRegion[currentX - 1][currentY] = EXPLORED_REGION;       //left
-        unexploredRegion[currentX + 1][currentY] = EXPLORED_REGION;       //right
-        unexploredRegion[currentX][currentY - 1] = EXPLORED_REGION;       //top
-        unexploredRegion[currentX][currentY + 1] = EXPLORED_REGION;       //down
-        unexploredRegion[currentX - 1][currentY - 1] = EXPLORED_REGION;       //top-left
-        unexploredRegion[currentX + 1][currentY - 1] = EXPLORED_REGION;       //top-right
-        unexploredRegion[currentX - 1][currentY + 1] = EXPLORED_REGION;       //bottom-left
-        unexploredRegion[currentX + 1][currentY + 1] = EXPLORED_REGION;       //bottom-right
-        //printUMaze();
-
+        unexploredRegion[currentY][currentX] = EXPLORED_REGION;       //current
+        unexploredRegion[currentY - 1][currentX] = EXPLORED_REGION;       //left
+        unexploredRegion[currentY + 1][currentX] = EXPLORED_REGION;       //right
+        unexploredRegion[currentY][currentX - 1] = EXPLORED_REGION;       //top
+        unexploredRegion[currentY][currentX + 1] = EXPLORED_REGION;       //down
+        unexploredRegion[currentY - 1][currentX - 1] = EXPLORED_REGION;       //top-left
+        unexploredRegion[currentY + 1][currentX - 1] = EXPLORED_REGION;       //top-right
+        unexploredRegion[currentY - 1][currentX + 1] = EXPLORED_REGION;       //bottom-left
+        unexploredRegion[currentY + 1][currentX + 1] = EXPLORED_REGION;       //bottom-right
     }
 
     public boolean cheeseEaten(){
-        if (player.getY() == cheese.getX() && player.getX() == cheese.getY()){
+        if (player.getY() == cheese.getY() && player.getX() == cheese.getX()){
             return true;
         }
         return false;
@@ -171,7 +164,7 @@ public class MazeHandler {
     public boolean playerEaten() {
         for (Cat cat : cats) {
             if (cat.getX() == player.getX() && cat.getY() == player.getY()) {
-                this.baseMaze[cat.getX()][cat.getY()] = 7;
+                this.baseMaze[cat.getY()][cat.getX()] = DEATH_SYMBOL;
                 return true;
             }
 
@@ -186,8 +179,6 @@ public class MazeHandler {
 
     public void unvisitedSpots(int y, int x){
         this.unexploredRegion = new int[col][row];
-        System.out.println(y);
-        System.out.println(x);
         for (int i = 0; i < y; i++){
             for (int j = 0; j < x; j++){
                 if (i == 0 || i == y - 1){
@@ -201,17 +192,8 @@ public class MazeHandler {
                 }
             }
         }
-        //printUMaze();
+    }
 
-    }
-    public void printUMaze(){
-        for (int i = 0; i < 15; i++){
-            for (int j = 0; j < 20; j++){
-                System.out.print(unexploredRegion[i][j]);
-            }
-            System.out.println();
-        }
-    }
     private void initCatList(){
         Cat catTopRight = new Cat(1, col-2, CAT_SYMBOL);
         Cat catBottomLeft = new Cat(row-2, 1, CAT_SYMBOL);
