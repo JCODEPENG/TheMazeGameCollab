@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class MazeHandler {
     private int[][] baseMaze;
-    private int unexploredRegion[][];
+    private int[][] unexploredRegion;
     private MazeGenerator maze;
     private Mouse player;
     private ArrayList<Cat> cats;
@@ -171,4 +171,5 @@ public class MazeHandler {
     private void setSymbol(int x, int y, int symbol){
         baseMaze[x][y] = symbol;
     }
+
 }
