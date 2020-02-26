@@ -1,5 +1,6 @@
 package com.company;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -12,6 +13,7 @@ public class MazeHandler {
     private Cheese cheese;
     private int col = 20;
     private int row = 15;
+    private final int PATH_SYMBOL = 2;
     private final int CAT_SYMBOL = 5;
     private final int PLAYER_SYMBOL = 4;
     private final int CHEESE_SYMBOL = 6;
@@ -34,71 +36,65 @@ public class MazeHandler {
        initCatList();
     }
 
-    public void UpdatePlayer(int choice){
-        int previousPositionX = player.GetX();
-        int previousPositionY = player.GetY();
+    public boolean updatePlayer(int choice){
+        int nextX = direction(choice)[0] + player.getX();
+        int nextY = direction(choice)[1] + player.getY();
 
-        if (choice == 1) {
-            player.MoveUp();
-            if (isWall(player.GetX(), player.GetY())) {
-                player.MoveDown();
-            } else {
-                makePath(previousPositionX, previousPositionY);
-                baseMaze[player.GetY()][player.GetX()] = player.GetSymbol();
-            }
+        if (!isWall(nextX, nextY)){
+            setSymbol(player.getX(), player.getY(), PATH_SYMBOL);
+            player.move(nextX, nextY);
+            setSymbol(player.getX(), player.getY(), PLAYER_SYMBOL);
+            return true;
         }
-        if(choice == 2) {
-            player.MoveLeft();
-            if (isWall(player.GetX(), player.GetY())) {
-                player.MoveRight();
-            } else {
-                makePath(previousPositionX, previousPositionY);
-                baseMaze[player.GetY()][player.GetX()] = player.GetSymbol();
-            }
-        }
-        if(choice == 3) {
-            player.MoveDown();
-            if (isWall(player.GetX(), player.GetY())) {
-                player.MoveUp();
-            } else {
-                makePath(previousPositionX, previousPositionY);
-                baseMaze[player.GetY()][player.GetX()] = player.GetSymbol();
-            }
-        }
-        if (choice == 4) {
-            player.MoveRight();
-            if (isWall(player.GetX(), player.GetY())) {
-                player.MoveLeft();
-            } else {
-                makePath(previousPositionX, previousPositionY);
-                baseMaze[player.GetY()][player.GetX()] = player.GetSymbol();
-            }
-        }
-
+        return false;
     }
 
+    private int[] direction(int choice){
+        switch(choice){
+            case(1):    //up
+                return new int[]{0, -1};
+            case(2):    //left
+                return new int[]{-1, 0};
+            case(3):    //down
+                return new int[]{0, 1};
+            case(4):    //right
+                return new int[]{1, 0};
+            default:
+                return new int[]{0, 0,};
+        }
+    }
 
-    public void updateCat() {
-        for (Cat cat : cats) {
-            boolean catMoved = false;
-            int previousPositionX = cat.GetX();
-            int previousPositionY = cat.GetY();
-            while (!catMoved) {
-                cat.MoveRandom();
-                if (isWall(cat.GetX(), cat.GetY())) {
-                    cat.SetX(previousPositionX);
-                    cat.SetY(previousPositionY);
+    public void updateCat(){
+        ArrayList<Integer> choiceX = new ArrayList<Integer>();
+        ArrayList<Integer> choiceY = new ArrayList<Integer>();
+        int choice = 0;
+        Random random = new Random();
 
-                } else {
-                    this.baseMaze[cat.GetY()][cat.GetX()] = cat.GetSymbol();
-                    this.baseMaze[previousPositionY][previousPositionX] = 2;
-                    catMoved = true;
+        for (Cat cat : cats){
+            choiceX.clear();
+            choiceY.clear();
+            cat.setLastX(cat.getX());
+            cat.setLastY(cat.getY());
+            for (int i = 1; i < 5; i++){
+                int newX = cat.getX() + direction(i)[0];
+                int newY = cat.getX() + direction(i)[1];
+
+                if (!isWall(newX, newY) && !cat.didBackTrace()){
+                    choiceX.add(newX);
+                    choiceY.add(newY);
                 }
             }
+            choice = random.nextInt(choiceX.size());
+            cat.move(choiceX.get(choice), choiceY.get(choice));
+            if (cat.getX() == cat.getLastX() && cat.getY() == cat.getLastY()){
+                cat.setBackTrace(true);
+            } else{
+                cat.setBackTrace(false);
+            }
         }
     }
 
-    public void UpdateCheese(){
+    public void updateCheese(){
         Random random = new Random();
         boolean CarryOn = true;
         while (CarryOn){
@@ -117,8 +113,8 @@ public class MazeHandler {
     }
 
     public void updateExploredRegions(){
-        int currentX = this.player.GetX();
-        int currentY = this.player.GetY();
+        int currentX = this.player.getX();
+        int currentY = this.player.getY();
         unexploredRegion[currentY][currentX] = 0;       //current
         unexploredRegion[currentY][currentX+1] = 0;     //
         unexploredRegion[currentY][currentX-1] = 0;
@@ -131,7 +127,7 @@ public class MazeHandler {
     }
 
     public boolean cheeseEaten(){
-        if (player.GetX() == cheese.GetX() && player.GetY() == cheese.GetY()){
+        if (player.getX() == cheese.GetX() && player.getY() == cheese.GetY()){
             return true;
         }
         return false;
@@ -139,8 +135,8 @@ public class MazeHandler {
 
     public boolean playerEaten() {
         for (Cat cat : cats) {
-            if (cat.GetX() == player.GetX() && cat.GetY() == player.GetY()) {
-                this.baseMaze[cat.GetY()][cat.GetX()] = 7;
+            if (cat.getX() == player.getX() && cat.getY() == player.getY()) {
+                this.baseMaze[cat.getY()][cat.getX()] = 7;
                 return true;
             }
 
@@ -171,7 +167,7 @@ public class MazeHandler {
         cats.add(catBottomRight);
     }
 
-    private void makePath(int x, int y){
-        baseMaze[x][y] = 2;
+    private void setSymbol(int x, int y, int symbol){
+        baseMaze[x][y] = symbol;
     }
 }

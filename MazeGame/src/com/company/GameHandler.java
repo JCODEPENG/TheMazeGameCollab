@@ -12,7 +12,7 @@ public class GameHandler {
         MazeHandler Testing = new MazeHandler();
         Testing.updateExploredRegions();
         boolean CarryOn = true;
-        Testing.UpdateCheese();
+        Testing.updateCheese();
         while (CarryOn){
             System.out.println("Input Key: ");
             Scanner Input = new Scanner(System.in);
@@ -22,13 +22,13 @@ public class GameHandler {
             }
             else{
 
-                Testing.UpdatePlayer(Key);
+                Testing.updatePlayer(Key);
                 Testing.updateCat();
                 if (Testing.cheeseEaten()){
 
                     CheeseCollected++;
                     System.out.println("Number of Cheese eaten: " + CheeseCollected);
-                    Testing.UpdateCheese();
+                    Testing.updateCheese();
                 }
                 if (Testing.playerEaten()){
                     System.out.println("END GAME");
