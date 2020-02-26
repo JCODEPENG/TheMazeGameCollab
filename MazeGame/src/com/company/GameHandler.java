@@ -11,7 +11,7 @@ public class GameHandler {
     public static void InterpretInput(int Choice, MazeHandler CurrentGame){
 
         if (Choice == 1 || Choice == 2 || Choice == 3 || Choice == 4){
-            CurrentGame.UpdatePlayer(Choice);
+            CurrentGame.updatePlayer(Choice);
         }
         if (Choice == 5){
             //return the maze
@@ -23,7 +23,7 @@ public class GameHandler {
 
     public void CombineMaze(MazeHandler TwoMazes){
         int[][] BaseMaze = TwoMazes.returnBaseMaze();
-        int[][] Unexplored = TwoMazes.returnUnexploredMaze();
+        int[][] Unexplored = TwoMazes.returnUnexploredRegion();
         for (int i = 0; i < 15; i++){
             for (int j = 0; j < 20; j++){
                 if (Unexplored[i][j] == 1) {
@@ -82,7 +82,7 @@ public class GameHandler {
             if (Testing.cheeseEaten()){
                 CheeseCollected++;
                 PrintToScreen.CheeseCollected(CheeseCollected,TotalCheeseNeeded);
-                Testing.UpdateCheese();
+                Testing.updateCheese();
             }
             if (Organizer.checkGameState(PrintToScreen, Organizer, Testing)){
                 break;

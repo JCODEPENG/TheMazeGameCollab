@@ -112,6 +112,15 @@ public class MazeHandler {
 
     }
 
+    public int[][] returnBaseMaze(){
+        return this.baseMaze;
+    }
+
+    public int[][] returnUnexploredRegion(){
+        return this.unexploredRegion;
+    }
+
+
     public void updateExploredRegions(){
         int currentX = this.player.getX();
         int currentY = this.player.getY();
