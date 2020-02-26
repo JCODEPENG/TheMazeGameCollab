@@ -22,8 +22,8 @@ public class GameHandler {
     }
 
     public void CombineMaze(MazeHandler TwoMazes){
-        int[][] BaseMaze = TwoMazes.ReturnBaseMaze();
-        int[][] Unexplored = TwoMazes.ReturnFogMaze();
+        int[][] BaseMaze = TwoMazes.returnBaseMaze();
+        int[][] Unexplored = TwoMazes.returnUnexploredMaze();
         for (int i = 0; i < 15; i++){
             for (int j = 0; j < 20; j++){
                 if (Unexplored[i][j] == 1) {
@@ -40,7 +40,7 @@ public class GameHandler {
     public boolean checkGameState(DisplayOutput PrintToScreen, GameHandler Organizer, MazeHandler MazeCheck){
         if (CheeseCollected == TotalCheeseNeeded){
             PrintToScreen.WinMsg();
-            PrintToScreen.OutputMaze(Organizer.outputMaze);
+            PrintToScreen.OutputMaze(MazeCheck.returnBaseMaze());
             PrintToScreen.CheeseCollected(CheeseCollected,TotalCheeseNeeded);
             return true;
         }
@@ -74,7 +74,7 @@ public class GameHandler {
             int Key = InputKey.ReturnInputKey();
 
             InterpretInput(Key, Testing);
-            Testing.UpdateCat();
+            Testing.updateCat();
             if (Testing.CheeseEaten()){
                 CheeseCollected++;
                 PrintToScreen.CheeseCollected(CheeseCollected,TotalCheeseNeeded);

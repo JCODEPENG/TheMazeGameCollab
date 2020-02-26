@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class MazeHandler {
     private int[][] baseMaze;
-    private int unexploredRegions[][];
+    private int[][] unexploredRegions;
     private MazeGenerator maze;
     private Mouse player;
     private List<Cat> cats;
@@ -133,8 +133,8 @@ public class MazeHandler {
                 this.baseMaze[cat.GetY()][cat.GetX()] = 7;
                 return true;
             }
-            return false;
         }
+        return false;
     }
 
     public boolean isWall(int PosX, int PosY){
@@ -149,6 +149,13 @@ public class MazeHandler {
                 unexploredRegions[loopX][loopY] = 1;
             }
         }
+    }
+
+    public int[][] returnBaseMaze(){
+        return this.baseMaze;
+    }
+    public int[][] returnUnexploredMaze(){
+        return this.unexploredRegions;
     }
 
     private void initCatList(){
