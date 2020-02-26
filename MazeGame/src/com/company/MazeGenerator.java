@@ -157,7 +157,6 @@ public class MazeGenerator{
             if ((left || top) && (left || down) && (right || top) && (right || down)){
                 isRemoved = true;
                 maze[ranX][ranY] = path;
-//                System.out.println("x: " + ranX + " Y: " + ranY);
             }
         }
     }

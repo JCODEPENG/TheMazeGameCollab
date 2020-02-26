@@ -23,13 +23,6 @@ public class Mouse {
         return this.playerSymbol;
     }
 
-    public void setX(int newXPos) {
-        this.positionX = newXPos;
-    }
-    public void setY(int newYPos){
-        this.positionY = newYPos;
-    }
-
     public void move(int newX, int newY){
         positionX = newX;
         positionY = newY;

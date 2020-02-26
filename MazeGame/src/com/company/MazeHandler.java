@@ -10,43 +10,40 @@ public class MazeHandler {
     private Mouse player;
     private ArrayList<Cat> cats;
     private Cheese cheese;
-    private int col = 20;
-    private int row = 15;
-    private final int PATH_SYMBOL = 2;
+    private int col = 15;
+    private int row = 20;
+    private final int PATH_SYMBOL = 1;
+    private final int EXPLORED_REGION = 2;
+    private final int UNEXPLORED_REGION = 3;
     private final int CAT_SYMBOL = 5;
     private final int PLAYER_SYMBOL = 4;
     private final int CHEESE_SYMBOL = 6;
+    private final int DEATH_SYMBOL = 7;
 
-    public static void main(String[] args) {
-        MazeGenerator maze = new MazeGenerator(20, 15);
-        int[][] Maze = maze.getMaze();
-        for (int y = 0; y < 15; y++){
-            for (int x = 0; x < 20; x++){
-                System.out.print(Maze[x][y]);
-            }
-            System.out.println();
-        }
-    }
     public MazeHandler(){
        this.maze = new MazeGenerator(col, row);
        this.baseMaze = maze.getMaze();
        unvisitedSpots(col, row);
        this.player = new Mouse(1 ,1 , PLAYER_SYMBOL);
+       this.baseMaze[player.getY()][player.getX()] = player.getSymbol();
        this.cats = new ArrayList<Cat>();
        initCatList();
     }
 
     public boolean updatePlayer(int choice){
+
         int nextX = direction(choice)[0] + player.getX();
         int nextY = direction(choice)[1] + player.getY();
 
-        if (!isWall(nextX, nextY)){
-            setSymbol(player.getX(), player.getY(), PATH_SYMBOL);
+        if (!isWall(nextY, nextX)){
+            setSymbol(player.getY(), player.getX(), PATH_SYMBOL);
             player.move(nextX, nextY);
-            setSymbol(player.getX(), player.getY(), PLAYER_SYMBOL);
+            setSymbol(player.getY(), player.getX(), PLAYER_SYMBOL);
             return true;
         }
         return false;
+
+
     }
 
     private int[] direction(int choice){
@@ -65,6 +62,7 @@ public class MazeHandler {
     }
 
     public void updateCat(){
+
         ArrayList<Integer> choiceX = new ArrayList<Integer>();
         ArrayList<Integer> choiceY = new ArrayList<Integer>();
         int choice = 0;
@@ -77,58 +75,91 @@ public class MazeHandler {
             cat.setLastY(cat.getY());
             for (int i = 1; i < 5; i++){
                 int newX = cat.getX() + direction(i)[0];
-                int newY = cat.getX() + direction(i)[1];
-
-                if (!isWall(newX, newY) && !cat.didBackTrace()){
+                int newY = cat.getY() + direction(i)[1];
+                //swapped here
+                if (!isWall(newY, newX) && !cat.didBackTrace()){
                     choiceX.add(newX);
                     choiceY.add(newY);
                 }
             }
             choice = random.nextInt(choiceX.size());
-            cat.move(choiceX.get(choice), choiceY.get(choice));
+            if(catOnCheese(cat.getX(), cat.getY())){
+                setSymbol(cat.getY(), cat.getX(), CHEESE_SYMBOL);
+                cat.move(choiceX.get(choice), choiceY.get(choice));
+                setSymbol(cat.getY(), cat.getX(), CAT_SYMBOL);
+            }
+            else{
+                setSymbol(cat.getY(), cat.getX(), PATH_SYMBOL);
+                cat.move(choiceX.get(choice), choiceY.get(choice));
+                setSymbol(cat.getY(), cat.getX(), CAT_SYMBOL);
+            }
+
             if (cat.getX() == cat.getLastX() && cat.getY() == cat.getLastY()){
                 cat.setBackTrace(true);
             } else{
                 cat.setBackTrace(false);
             }
+
         }
     }
 
     public void updateCheese(){
+
         Random random = new Random();
         boolean CarryOn = true;
         while (CarryOn){
-            int randomX = random.nextInt(col);
-            int randomY = random.nextInt(row);
-            if (baseMaze[randomX][randomY] == PLAYER_SYMBOL || isWall(randomX,randomY)){
+            int randomX = random.nextInt(row);
+            int randomY = random.nextInt(col);
+            if (baseMaze[randomY][randomX] == PLAYER_SYMBOL || isWall(randomY,randomX)){
                 CarryOn = true;
             }
             else{
                 cheese = new Cheese(randomX,randomY, CHEESE_SYMBOL);
-                baseMaze[randomX][randomY] = cheese.getSymbol();
+                baseMaze[randomY][randomX] = cheese.getSymbol();
                 CarryOn = false;
             }
         }
 
+
+    }
+
+    public int[][] returnBaseMaze(){
+        return this.baseMaze;
+    }
+
+    public int[][] returnUnexploredRegion(){
+        return this.unexploredRegion;
+    }
+
+    public int returnPlayerSymbol(){
+        return PLAYER_SYMBOL;
+    }
+    public int returnCheeseSymbol(){
+        return CHEESE_SYMBOL;
+    }
+    public int returnCatSymbol(){
+        return CAT_SYMBOL;
+    }
+    public int returnExploredSymbol(){
+        return EXPLORED_REGION;
     }
 
     public void updateExploredRegions(){
         int currentX = this.player.getX();
         int currentY = this.player.getY();
-        unexploredRegion[currentX][currentY] = 0;       //current
-        unexploredRegion[currentX - 1][currentY] = 0;       //left
-        unexploredRegion[currentX + 1][currentY] = 0;       //right
-        unexploredRegion[currentX][currentY - 1] = 0;       //top
-        unexploredRegion[currentX][currentY + 1] = 0;       //down
-        unexploredRegion[currentX - 1][currentY - 1] = 0;       //top-left
-        unexploredRegion[currentX + 1][currentY - 1] = 0;       //top-right
-        unexploredRegion[currentX - 1][currentY + 1] = 0;       //bottom-left
-        unexploredRegion[currentX + 1][currentY + 1] = 0;       //bottom-right
-
+        unexploredRegion[currentY][currentX] = EXPLORED_REGION;       //current
+        unexploredRegion[currentY - 1][currentX] = EXPLORED_REGION;       //left
+        unexploredRegion[currentY + 1][currentX] = EXPLORED_REGION;       //right
+        unexploredRegion[currentY][currentX - 1] = EXPLORED_REGION;       //top
+        unexploredRegion[currentY][currentX + 1] = EXPLORED_REGION;       //down
+        unexploredRegion[currentY - 1][currentX - 1] = EXPLORED_REGION;       //top-left
+        unexploredRegion[currentY + 1][currentX - 1] = EXPLORED_REGION;       //top-right
+        unexploredRegion[currentY - 1][currentX + 1] = EXPLORED_REGION;       //bottom-left
+        unexploredRegion[currentY + 1][currentX + 1] = EXPLORED_REGION;       //bottom-right
     }
 
     public boolean cheeseEaten(){
-        if (player.getX() == cheese.getX() && player.getY() == cheese.getY()){
+        if (player.getY() == cheese.getY() && player.getX() == cheese.getX()){
             return true;
         }
         return false;
@@ -137,7 +168,7 @@ public class MazeHandler {
     public boolean playerEaten() {
         for (Cat cat : cats) {
             if (cat.getX() == player.getX() && cat.getY() == player.getY()) {
-                this.baseMaze[cat.getX()][cat.getY()] = 7;
+                this.baseMaze[cat.getY()][cat.getX()] = DEATH_SYMBOL;
                 return true;
             }
 
@@ -145,27 +176,47 @@ public class MazeHandler {
         return false;
     }
 
+    public boolean catOnCheese(int getX, int getY){
+        if (getX == cheese.getX() && getY == cheese.getY()) {
+            return true;
+        }
+
+        return false;
+    }
+
     public boolean isWall(int PosX, int PosY){
         return maze.isWall(PosX, PosY);
     }
 
-
-    public void unvisitedSpots(int x, int y){
-        unexploredRegion = new int[x][y];
-        for (int loopY = 1; loopY < y - 1; y++){
-            for (int loopX = 1; loopX < x - 1; x++){
-                unexploredRegion[loopX][loopY] = 1;
+    public void unvisitedSpots(int y, int x){
+        this.unexploredRegion = new int[col][row];
+        for (int i = 0; i < y; i++){
+            for (int j = 0; j < x; j++){
+                if (i == 0 || i == y - 1){
+                    unexploredRegion[i][j] = EXPLORED_REGION;
+                }
+                else if (j == 0 || j == x - 1){
+                    unexploredRegion[i][j] = EXPLORED_REGION;
+                }
+                else {
+                    unexploredRegion[i][j] = UNEXPLORED_REGION;
+                }
             }
         }
     }
 
     private void initCatList(){
-        Cat catTopRight = new Cat(col - 2, 1, CAT_SYMBOL);
-        Cat catBottomLeft = new Cat(1, row - 2, CAT_SYMBOL);
-        Cat catBottomRight = new Cat(col - 2, row - 2, CAT_SYMBOL);
+        Cat catTopRight = new Cat(1, col-2, CAT_SYMBOL);
+        Cat catBottomLeft = new Cat(row-2, 1, CAT_SYMBOL);
+        Cat catBottomRight = new Cat(row -2, col - 2, CAT_SYMBOL);
         cats.add(catTopRight);
         cats.add(catBottomLeft);
         cats.add(catBottomRight);
+        baseMaze[catTopRight.getY()][catTopRight.getX()] = CAT_SYMBOL;
+        baseMaze[catBottomLeft.getY()][catBottomLeft.getX()] = CAT_SYMBOL;
+        baseMaze[catBottomRight.getY()][catBottomRight.getX()] = CAT_SYMBOL;
+
+
     }
 
     private void setSymbol(int x, int y, int symbol){
