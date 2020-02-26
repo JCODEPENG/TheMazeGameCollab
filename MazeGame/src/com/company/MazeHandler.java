@@ -115,15 +115,16 @@ public class MazeHandler {
     public void updateExploredRegions(){
         int currentX = this.player.getX();
         int currentY = this.player.getY();
-        unexploredRegion[currentY][currentX] = 0;       //current
-        unexploredRegion[currentY][currentX+1] = 0;     //
-        unexploredRegion[currentY][currentX-1] = 0;
-        unexploredRegion[currentY+1][currentX] = 0;
-        unexploredRegion[currentY-1][currentX] = 0;
-        unexploredRegion[currentY-1][currentX-1] = 0;
-        unexploredRegion[currentY-1][currentX+1] = 0;
-        unexploredRegion[currentY+1][currentX-1] = 0;
-        unexploredRegion[currentY+1][currentX+1] = 0;
+        unexploredRegion[currentX][currentY] = 0;       //current
+        unexploredRegion[currentX - 1][currentY] = 0;       //left
+        unexploredRegion[currentX + 1][currentY] = 0;       //right
+        unexploredRegion[currentX][currentY - 1] = 0;       //top
+        unexploredRegion[currentX][currentY + 1] = 0;       //down
+        unexploredRegion[currentX - 1][currentY - 1] = 0;       //top-left
+        unexploredRegion[currentX + 1][currentY - 1] = 0;       //top-right
+        unexploredRegion[currentX - 1][currentY + 1] = 0;       //bottom-left
+        unexploredRegion[currentX + 1][currentY + 1] = 0;       //bottom-right
+
     }
 
     public boolean cheeseEaten(){
