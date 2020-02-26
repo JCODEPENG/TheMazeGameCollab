@@ -58,13 +58,15 @@ public class GameHandler {
         UserInput InputKey = new UserInput();
         DisplayOutput PrintToScreen = new DisplayOutput();
         MazeHandler Testing = new MazeHandler();
+        boolean CarryOn = true;
 
         PrintToScreen.WelcomeMsg();
         PrintToScreen.HelpMsg();
 
 
-        boolean CarryOn = true;
-        Testing.UpdateCheese();
+
+        Testing.updateExploredRegions();
+
 
         while (CarryOn){
             Testing.UpdateExploredRegions();
@@ -72,6 +74,8 @@ public class GameHandler {
             InputKey.GetInputKey();
             PrintToScreen.OutputMaze(Organizer.outputMaze);
             int Key = InputKey.ReturnInputKey();
+
+
 
             InterpretInput(Key, Testing);
             Testing.updateCat();

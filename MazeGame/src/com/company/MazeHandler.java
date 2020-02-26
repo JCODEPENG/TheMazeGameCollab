@@ -5,21 +5,31 @@ import java.util.Random;
 
 public class MazeHandler {
     private int[][] baseMaze;
-    private int[][] unexploredRegions;
+    private int unexploredRegion[][];
     private MazeGenerator maze;
     private Mouse player;
     private List<Cat> cats;
     private Cheese cheese;
-    private int sizeX = 20;
-    private int sizeY = 15;
+    private int col = 20;
+    private int row = 15;
     private final int CAT_SYMBOL = 5;
     private final int PLAYER_SYMBOL = 4;
     private final int CHEESE_SYMBOL = 6;
 
+    public static void main(String[] args) {
+        MazeGenerator maze = new MazeGenerator(20, 15);
+        int[][] Maze = maze.getMaze();
+        for (int y = 0; y < 15; y++){
+            for (int x = 0; x < 20; x++){
+                System.out.print(Maze[x][y]);
+            }
+            System.out.println();
+        }
+    }
     public MazeHandler(){
-       this.maze = new MazeGenerator(sizeX, sizeY);
+       this.maze = new MazeGenerator(col, row);
        this.baseMaze = maze.getMaze();
-       unvisitedSpots(sizeX, sizeY);
+       unvisitedSpots(col, row);
        this.player = new Mouse(1 ,1 , PLAYER_SYMBOL);
        initCatList();
     }
@@ -106,33 +116,34 @@ public class MazeHandler {
 
     }
 
-    public void UpdateExploredRegions(){
-        int CurrentX = this.player.GetX();
-        int CurrentY = this.player.GetY();
-        unexploredRegions[CurrentY][CurrentX] = 0;
-        unexploredRegions[CurrentY][CurrentX+1] = 0;
-        unexploredRegions[CurrentY][CurrentX-1] = 0;
-        unexploredRegions[CurrentY+1][CurrentX] = 0;
-        unexploredRegions[CurrentY-1][CurrentX] = 0;
-        unexploredRegions[CurrentY-1][CurrentX-1] = 0;
-        unexploredRegions[CurrentY-1][CurrentX+1] = 0;
-        unexploredRegions[CurrentY+1][CurrentX-1] = 0;
-        unexploredRegions[CurrentY+1][CurrentX+1] = 0;
+    public void updateExploredRegions(){
+        int currentX = this.player.GetX();
+        int currentY = this.player.GetY();
+        unexploredRegion[currentY][currentX] = 0;       //current
+        unexploredRegion[currentY][currentX+1] = 0;     //
+        unexploredRegion[currentY][currentX-1] = 0;
+        unexploredRegion[currentY+1][currentX] = 0;
+        unexploredRegion[currentY-1][currentX] = 0;
+        unexploredRegion[currentY-1][currentX-1] = 0;
+        unexploredRegion[currentY-1][currentX+1] = 0;
+        unexploredRegion[currentY+1][currentX-1] = 0;
+        unexploredRegion[currentY+1][currentX+1] = 0;
     }
 
-    public boolean CheeseEaten(){
+    public boolean cheeseEaten(){
         if (player.GetX() == cheese.GetX() && player.GetY() == cheese.GetY()){
             return true;
         }
         return false;
     }
 
-    public boolean PlayerEaten() {
+    public boolean playerEaten() {
         for (Cat cat : cats) {
             if (cat.GetX() == player.GetX() && cat.GetY() == player.GetY()) {
                 this.baseMaze[cat.GetY()][cat.GetX()] = 7;
                 return true;
             }
+
         }
         return false;
     }
@@ -143,25 +154,18 @@ public class MazeHandler {
 
 
     public void unvisitedSpots(int x, int y){
-        unexploredRegions = new int[x][y];
+        unexploredRegion = new int[x][y];
         for (int loopY = 1; loopY < y - 1; y++){
             for (int loopX = 1; loopX < x - 1; x++){
-                unexploredRegions[loopX][loopY] = 1;
+                unexploredRegion[loopX][loopY] = 1;
             }
         }
     }
 
-    public int[][] returnBaseMaze(){
-        return this.baseMaze;
-    }
-    public int[][] returnUnexploredMaze(){
-        return this.unexploredRegions;
-    }
-
     private void initCatList(){
-        Cat catTopRight = new Cat(sizeX - 2, 1, CAT_SYMBOL);
-        Cat catBottomLeft = new Cat(1, sizeY - 2, CAT_SYMBOL);
-        Cat catBottomRight = new Cat(sizeX - 2, sizeY - 2, CAT_SYMBOL);
+        Cat catTopRight = new Cat(col - 2, 1, CAT_SYMBOL);
+        Cat catBottomLeft = new Cat(1, row - 2, CAT_SYMBOL);
+        Cat catBottomRight = new Cat(col - 2, row - 2, CAT_SYMBOL);
         cats.add(catTopRight);
         cats.add(catBottomLeft);
         cats.add(catBottomRight);
@@ -170,6 +174,4 @@ public class MazeHandler {
     private void makePath(int x, int y){
         baseMaze[x][y] = 2;
     }
-
-
 }
