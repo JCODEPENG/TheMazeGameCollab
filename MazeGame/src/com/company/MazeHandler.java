@@ -4,11 +4,10 @@ import java.util.Random;
 
 public class MazeHandler {
     private int[][] BaseMaze;
-    private int UnexploredRegions[][];
+    private int[][] UnexploredRegions;
     private Mouse Player = new Mouse(1 ,1 , 4);
     private Cat Cat1 = new Cat(18, 1, 5);
     private Cheese Cheese;
-
 
     public MazeHandler(){
         TemporaryMaze();
@@ -138,6 +137,13 @@ public class MazeHandler {
         else{
             return false;
         }
+    }
+
+    public int[][] ReturnBaseMaze(){
+        return this.BaseMaze;
+    }
+    public int[][] ReturnFogMaze(){
+        return this.UnexploredRegions;
     }
 
     public void TemporaryMaze(){
