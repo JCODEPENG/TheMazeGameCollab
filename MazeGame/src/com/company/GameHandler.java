@@ -36,46 +36,54 @@ public class GameHandler {
         }
 
     }
+
+    public boolean checkGameState(DisplayOutput PrintToScreen, GameHandler Organizer, MazeHandler MazeCheck){
+        if (CheeseCollected == TotalCheeseNeeded){
+            PrintToScreen.WinMsg();
+            PrintToScreen.OutputMaze(Organizer.outputMaze);
+            PrintToScreen.CheeseCollected(CheeseCollected,TotalCheeseNeeded);
+            return true;
+        }
+        if (MazeCheck.PlayerEaten()){
+            PrintToScreen.gotEatenMsg();
+            PrintToScreen.OutputMaze(Organizer.outputMaze);
+            PrintToScreen.gameOverMsg();
+            return true;
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
         GameHandler Organizer = new GameHandler();
         UserInput InputKey = new UserInput();
-
         DisplayOutput PrintToScreen = new DisplayOutput();
+        MazeHandler Testing = new MazeHandler();
 
         PrintToScreen.WelcomeMsg();
         PrintToScreen.HelpMsg();
-        MazeHandler Testing = new MazeHandler();
-        Organizer.CombineMaze(Testing);
 
-        Testing.UpdateExploredRegions();
+
         boolean CarryOn = true;
         Testing.UpdateCheese();
-        PrintToScreen.OutputMaze(Organizer.outputMaze);
-        while (CarryOn){
-            InputKey.GetInputKey();
 
+        while (CarryOn){
+            Testing.UpdateExploredRegions();
+            Organizer.CombineMaze(Testing);
+            InputKey.GetInputKey();
+            PrintToScreen.OutputMaze(Organizer.outputMaze);
             int Key = InputKey.ReturnInputKey();
-            if (Key == 6){
+
+            InterpretInput(Key, Testing);
+            Testing.UpdateCat();
+            if (Testing.CheeseEaten()){
+                CheeseCollected++;
+                PrintToScreen.CheeseCollected(CheeseCollected,TotalCheeseNeeded);
+                Testing.UpdateCheese();
+            }
+            if (Organizer.checkGameState(PrintToScreen, Organizer, Testing)){
                 break;
             }
-            else{
-
-                InterpretInput(Key, Testing);
-                Testing.UpdateCat();
-                if (Testing.CheeseEaten()){
-                    CheeseCollected++;
-                    PrintToScreen.CheeseCollected(CheeseCollected,TotalCheeseNeeded);
-                    Testing.UpdateCheese();
-                }
-                if (Testing.PlayerEaten()){
-                    System.out.println("END GAME");
-                    break;
-                }
-                Testing.UpdateExploredRegions();
-
-            }
-
-
+            
         }
 
     }

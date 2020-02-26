@@ -24,7 +24,7 @@ public class DisplayOutput {
                     System.out.println('!');
                 }
                 if (Maze[i][j] == 6){
-                    System.out.println('C');
+                    System.out.println('$');
                 }
                 if (Maze[i][j] == 7){
                     System.out.println('X');
@@ -51,6 +51,9 @@ public class DisplayOutput {
         System.out.println("Cheese collected: " + NumberCollected + " of "+ TotalNeeded);
     }
 
+    public void invalidInput(){
+        System.out.println("Invalid move. Please enter just A (left), S (down), D (right), or W (up).");
+    }
     public void GetInputMsg(){
         System.out.print("Enter your move [WASD?]: ");
     }
@@ -61,11 +64,11 @@ public class DisplayOutput {
         System.out.println("Invalid move: you cannot move through walls!");
     }
 
-    public void GotEatenMsg(){
+    public void gotEatenMsg(){
         System.out.println("I'm sorry, you have been eaten!");
     }
 
-    public void GameOverMsg(){
+    public void gameOverMsg(){
         System.out.println("GAME OVER; please try again.");
     }
 }
