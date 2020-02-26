@@ -44,7 +44,7 @@ public class GameHandler {
             PrintToScreen.CheeseCollected(CheeseCollected,TotalCheeseNeeded);
             return true;
         }
-        if (MazeCheck.PlayerEaten()){
+        if (MazeCheck.playerEaten()){
             PrintToScreen.gotEatenMsg();
             PrintToScreen.OutputMaze(Organizer.outputMaze);
             PrintToScreen.gameOverMsg();
@@ -69,7 +69,7 @@ public class GameHandler {
 
 
         while (CarryOn){
-            Testing.UpdateExploredRegions();
+            Testing.updateExploredRegions();
             Organizer.CombineMaze(Testing);
             InputKey.GetInputKey();
             PrintToScreen.OutputMaze(Organizer.outputMaze);
@@ -79,7 +79,7 @@ public class GameHandler {
 
             InterpretInput(Key, Testing);
             Testing.updateCat();
-            if (Testing.CheeseEaten()){
+            if (Testing.cheeseEaten()){
                 CheeseCollected++;
                 PrintToScreen.CheeseCollected(CheeseCollected,TotalCheeseNeeded);
                 Testing.UpdateCheese();

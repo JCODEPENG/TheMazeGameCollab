@@ -77,6 +77,13 @@ public class MazeHandler {
 
     }
 
+    public int[][] returnBaseMaze(){
+        return this.baseMaze;
+    }
+
+    public int[][] returnUnexploredMaze(){
+        return this.unexploredRegion;
+    }
 
     public void updateCat() {
         for (Cat cat : cats) {
