@@ -10,7 +10,7 @@ public class GameHandler {
         test.WelcomeMsg();
         test.HelpMsg();
         MazeHandler Testing = new MazeHandler();
-        Testing.UpdateExploredRegions();
+        Testing.updateExploredRegions();
         boolean CarryOn = true;
         Testing.UpdateCheese();
         while (CarryOn){
@@ -24,17 +24,17 @@ public class GameHandler {
 
                 Testing.UpdatePlayer(Key);
                 Testing.updateCat();
-                if (Testing.CheeseEaten()){
+                if (Testing.cheeseEaten()){
 
                     CheeseCollected++;
                     System.out.println("Number of Cheese eaten: " + CheeseCollected);
                     Testing.UpdateCheese();
                 }
-                if (Testing.PlayerEaten()){
+                if (Testing.playerEaten()){
                     System.out.println("END GAME");
                     break;
                 }
-                Testing.UpdateExploredRegions();
+                Testing.updateExploredRegions();
 
             }
 
