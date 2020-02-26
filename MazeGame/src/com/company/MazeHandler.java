@@ -1,7 +1,6 @@
 package com.company;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class MazeHandler {
@@ -9,7 +8,7 @@ public class MazeHandler {
     private int unexploredRegion[][];
     private MazeGenerator maze;
     private Mouse player;
-    private List<Cat> cats;
+    private ArrayList<Cat> cats;
     private Cheese cheese;
     private int col = 20;
     private int row = 15;
@@ -33,6 +32,7 @@ public class MazeHandler {
        this.baseMaze = maze.getMaze();
        unvisitedSpots(col, row);
        this.player = new Mouse(1 ,1 , PLAYER_SYMBOL);
+       this.cats = new ArrayList<Cat>();
        initCatList();
     }
 
@@ -105,7 +105,7 @@ public class MazeHandler {
             }
             else{
                 cheese = new Cheese(randomX,randomY, CHEESE_SYMBOL);
-                baseMaze[randomX][randomY] = cheese.GetSymbol();
+                baseMaze[randomX][randomY] = cheese.getSymbol();
                 CarryOn = false;
             }
         }
@@ -124,19 +124,20 @@ public class MazeHandler {
     public void updateExploredRegions(){
         int currentX = this.player.getX();
         int currentY = this.player.getY();
-        unexploredRegion[currentY][currentX] = 0;       //current
-        unexploredRegion[currentY][currentX+1] = 0;     //
-        unexploredRegion[currentY][currentX-1] = 0;
-        unexploredRegion[currentY+1][currentX] = 0;
-        unexploredRegion[currentY-1][currentX] = 0;
-        unexploredRegion[currentY-1][currentX-1] = 0;
-        unexploredRegion[currentY-1][currentX+1] = 0;
-        unexploredRegion[currentY+1][currentX-1] = 0;
-        unexploredRegion[currentY+1][currentX+1] = 0;
+        unexploredRegion[currentX][currentY] = 0;       //current
+        unexploredRegion[currentX - 1][currentY] = 0;       //left
+        unexploredRegion[currentX + 1][currentY] = 0;       //right
+        unexploredRegion[currentX][currentY - 1] = 0;       //top
+        unexploredRegion[currentX][currentY + 1] = 0;       //down
+        unexploredRegion[currentX - 1][currentY - 1] = 0;       //top-left
+        unexploredRegion[currentX + 1][currentY - 1] = 0;       //top-right
+        unexploredRegion[currentX - 1][currentY + 1] = 0;       //bottom-left
+        unexploredRegion[currentX + 1][currentY + 1] = 0;       //bottom-right
+
     }
 
     public boolean cheeseEaten(){
-        if (player.getX() == cheese.GetX() && player.getY() == cheese.GetY()){
+        if (player.getX() == cheese.getX() && player.getY() == cheese.getY()){
             return true;
         }
         return false;

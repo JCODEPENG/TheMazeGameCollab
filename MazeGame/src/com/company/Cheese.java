@@ -1,25 +1,25 @@
 package com.company;
 
 public class Cheese {
-    private int PositionX;
-    private int PositionY;
-    private int PlayerSymbol;
+    private int positionX;
+    private int positionY;
+    private int playerSymbol;
 
     public Cheese(int PosX, int PosY, int Symbol){
-        this.PositionX = PosX;
-        this.PositionY = PosY;
-        this.PlayerSymbol = Symbol;
+        this.positionX = PosX;
+        this.positionY = PosY;
+        this.playerSymbol = Symbol;
     }
 
-    public int GetX(){
-        return this.PositionX;
+    public int getX(){
+        return this.positionX;
     }
 
-    public int GetY(){
-        return this.PositionY;
+    public int getY(){
+        return this.positionY;
     }
 
-    public int GetSymbol(){
-        return this.PlayerSymbol;
+    public int getSymbol(){
+        return this.playerSymbol;
     }
 }
