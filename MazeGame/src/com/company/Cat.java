@@ -4,8 +4,8 @@ import java.awt.*;
 import java.util.Random;
 
 public class Cat extends Mouse {
-    public Cat(int i, int i1, int i2) {
-        super(i, i1, i2);
+    public Cat(int x, int y, int symbol) {
+        super(x, y, symbol);
     }
 
     public void MoveRandom(){

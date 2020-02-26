@@ -14,7 +14,6 @@ public class GameHandler {
         boolean CarryOn = true;
         Testing.UpdateCheese();
         while (CarryOn){
-            Testing.tmpPrint();
             System.out.println("Input Key: ");
             Scanner Input = new Scanner(System.in);
             int Key = Input.nextInt();
@@ -24,7 +23,7 @@ public class GameHandler {
             else{
 
                 Testing.UpdatePlayer(Key);
-                Testing.UpdateCat();
+                Testing.updateCat();
                 if (Testing.CheeseEaten()){
 
                     CheeseCollected++;

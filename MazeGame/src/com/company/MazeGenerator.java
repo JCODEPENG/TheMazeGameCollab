@@ -5,8 +5,8 @@ import java.util.Random;
 import java.util.Stack;
 
 public class MazeGenerator{
-    private int row ;
-    private int col ;
+    private int sizeX ;
+    private int sizeY ;
     private int[][] maze;
     private Stack<Integer> inCompleteX;
     private Stack<Integer> inCompleteY;
@@ -15,10 +15,10 @@ public class MazeGenerator{
     private int wall = 0;
     private int path = 1;
 
-    public MazeGenerator(int row, int col){
-        this.row = row;
-        this.col = col;
-        this.maze = new int[this.col][this.row];
+    public MazeGenerator(int sizeX, int sizeY){
+        this.sizeX = sizeX;
+        this.sizeY = sizeY;
+        this.maze = new int[this.sizeX][this.sizeY];
         this.inCompleteX = new Stack<Integer>();
         this.inCompleteY = new Stack<Integer>();
         this.listX = new ArrayList<Integer>();
@@ -49,11 +49,11 @@ public class MazeGenerator{
             currentX = inCompleteX.pop();
             currentY = inCompleteY.pop();
         }
-        maze[col - 2][1] = path;          //top-right cat
-        maze[1][row - 2] = path;          //bottom-left cat
-        maze[col - 2][row - 2] = path;    //bottom-right cat
+        maze[sizeX - 2][1] = path;          //top-right cat
+        maze[1][sizeY - 2] = path;          //bottom-left cat
+        maze[sizeX - 2][sizeY - 2] = path;    //bottom-right cat
 
-        for (int i = 0; i < row; i ++){
+        for (int i = 0; i < sizeY; i ++){
             randomRemoveWall();
         }
     }
@@ -108,13 +108,13 @@ public class MazeGenerator{
     }
 
     private  boolean isInBound(int x, int y){
-        if (x < 1 || x > col - 2 || y < 1 || y > row - 2) {
+        if (x < 1 || x > sizeX - 2 || y < 1 || y > sizeY - 2) {
             return false;
         }
         return true;
     }
 
-    private boolean isWall(int x, int y){
+    public boolean isWall(int x, int y){
         return (maze[x][y] == wall);
     }
 
@@ -126,8 +126,8 @@ public class MazeGenerator{
             int ranX;
             int ranY;
             while(true) {
-                ranX = random.nextInt(col);
-                ranY = random.nextInt(row);
+                ranX = random.nextInt(sizeX);
+                ranY = random.nextInt(sizeY);
                 if (maze[ranX][ranY] == wall){
                     break;
                 }
