@@ -83,7 +83,7 @@ public class GameHandler {
             if (Organizer.checkGameState(PrintToScreen, Organizer, Testing)){
                 break;
             }
-            
+
         }
 
     }
