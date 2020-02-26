@@ -19,15 +19,15 @@ public class Mouse {
         return this.positionY;
     }
 
-    public int GetSymbol(){
+    public int getSymbol(){
         return this.playerSymbol;
     }
 
-    public void SetX(int NewXPos) {
-        this.positionX = NewXPos;
+    public void setX(int newXPos) {
+        this.positionX = newXPos;
     }
-    public void SetY(int NewYPos){
-        this.positionY = NewYPos;
+    public void setY(int newYPos){
+        this.positionY = newYPos;
     }
 
     public void move(int newX, int newY){

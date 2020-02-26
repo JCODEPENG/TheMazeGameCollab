@@ -105,7 +105,7 @@ public class MazeHandler {
             }
             else{
                 cheese = new Cheese(randomX,randomY, CHEESE_SYMBOL);
-                baseMaze[randomX][randomY] = cheese.GetSymbol();
+                baseMaze[randomX][randomY] = cheese.getSymbol();
                 CarryOn = false;
             }
         }
@@ -128,7 +128,7 @@ public class MazeHandler {
     }
 
     public boolean cheeseEaten(){
-        if (player.getX() == cheese.GetX() && player.getY() == cheese.GetY()){
+        if (player.getX() == cheese.getX() && player.getY() == cheese.getY()){
             return true;
         }
         return false;
