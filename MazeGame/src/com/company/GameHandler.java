@@ -54,9 +54,9 @@ public class GameHandler {
 
     public boolean checkGameState(DisplayOutput PrintToScreen, GameHandler Organizer, MazeHandler MazeCheck){
         if (cheeseCollected == totalCheeseNeeded){
-            PrintToScreen.WinMsg();
+            PrintToScreen.winMsg();
             PrintToScreen.OutputMaze(MazeCheck.returnBaseMaze());
-            PrintToScreen.CheeseCollected(cheeseCollected,totalCheeseNeeded);
+            PrintToScreen.cheeseCollected(cheeseCollected,totalCheeseNeeded);
             return true;
         }
         if (MazeCheck.playerEaten()){
@@ -75,8 +75,8 @@ public class GameHandler {
         MazeHandler Testing = new MazeHandler();
         Testing.updateCheese();
         boolean CarryOn = true;
-        PrintToScreen.WelcomeMsg();
-        PrintToScreen.HelpMsg();
+        PrintToScreen.welcomeMsg();
+        PrintToScreen.helpMsg();
         Testing.updateExploredRegions();
         while (CarryOn){
             Testing.updateExploredRegions();
@@ -87,8 +87,8 @@ public class GameHandler {
             else{
                 PrintToScreen.OutputMaze(Testing.returnBaseMaze());
             }
-            PrintToScreen.CheeseCollected(cheeseCollected,totalCheeseNeeded);
-            PrintToScreen.GetInputMsg();
+            PrintToScreen.cheeseCollected(cheeseCollected,totalCheeseNeeded);
+            PrintToScreen.getInputMsg();
             InputKey.GetInputKey();
             int Key = InputKey.ReturnInputKey();
             if(InterpretInput(Key, Testing)){
