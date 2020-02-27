@@ -71,7 +71,6 @@ public class MazeGenerator{
         return maze;
     }
 
-
     private void pushStacks(int x, int y){
         inCompleteX.push(x);
         inCompleteY.push(y);
