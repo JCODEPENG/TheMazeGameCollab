@@ -43,6 +43,7 @@ public class MazeHandler {
             setSymbol(player.getY(), player.getX(), PATH_SYMBOL);
             player.move(nextX, nextY);
             setSymbol(player.getY(), player.getX(), PLAYER_SYMBOL);
+
             return true;
         }
         return false;
@@ -72,6 +73,7 @@ public class MazeHandler {
         Random random = new Random();
 
         for (Cat cat : cats){
+
             int lastChoiceX = cat.getLastX();
             int lastChoiceY = cat.getLastY();
             choiceX.clear();
@@ -179,11 +181,11 @@ public class MazeHandler {
 
     public boolean playerEaten() {
         for (Cat cat : cats) {
+
             if (cat.getX() == player.getX() && cat.getY() == player.getY()) {
                 this.baseMaze[cat.getY()][cat.getX()] = DEATH_SYMBOL;
                 return true;
             }
-
         }
         return false;
     }
@@ -231,6 +233,7 @@ public class MazeHandler {
 
 
     }
+
 
     private void setSymbol(int x, int y, int symbol){
         baseMaze[x][y] = symbol;

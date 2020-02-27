@@ -21,7 +21,6 @@ public class GameHandler {
                 DisplayOutput.invalidMoveMsg();
                 return false;
             } else{
-                currentGame.updateCat();
                 return true;
             }
         } else if (choice == 5){
@@ -104,6 +103,7 @@ public class GameHandler {
                 if (mazeHandler.cheeseEaten()){
                     cheeseCollected++;
                 }
+                mazeHandler.updateCat();
                 if (organizer.checkGameState(printToScreen, mazeHandler)){
                     break;
                 }
@@ -111,6 +111,7 @@ public class GameHandler {
                     mazeHandler.updateCheese();
                 }
                 printMaze = true;
+
             }
             else{
                 printMaze = false;
