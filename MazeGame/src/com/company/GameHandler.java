@@ -6,11 +6,10 @@ public class GameHandler {
     private static int cheeseCollected = 0;
     private static int totalCheeseNeeded = 5;
     private static boolean revealMaze = false;
-
+    private static boolean printMaze = true;
     private int[][] outputMaze = new int[15][20];
 
     public static boolean InterpretInput(int Choice, MazeHandler CurrentGame){
-
         if (Choice == 1 || Choice == 2 || Choice == 3 || Choice == 4){
             boolean Updated = CurrentGame.updatePlayer(Choice);
             if(!Updated) {
@@ -18,41 +17,48 @@ public class GameHandler {
                 return false;
             }
             else{
+                CurrentGame.updateCat();
                 return true;
             }
         }
         else if (Choice == 5){
             revealMaze = true;
+            return true;
+
         }
         else if (Choice == 6){
             totalCheeseNeeded = 1;
         }
+        else if (Choice == 7){
+            DisplayOutput.helpMsg();
+        }
         else{
             DisplayOutput.invalidInput();
         }
-
         return false;
 
     }
 
     public void CombineMaze(MazeHandler TwoMazes){
-        int[][] BaseMaze = TwoMazes.returnBaseMaze();
-        int[][] Unexplored = TwoMazes.returnUnexploredRegion();
-        for (int i = 0; i < 15; i++){
-            for (int j = 0; j < 20; j++){
-                if (BaseMaze[i][j] == TwoMazes.returnCatSymbol() || BaseMaze[i][j] == TwoMazes.returnPlayerSymbol() || BaseMaze[i][j] == TwoMazes.returnCheeseSymbol()
-                        || Unexplored[i][j] == TwoMazes.returnExploredSymbol()) {
-                    outputMaze[i][j] = BaseMaze[i][j];
+        int[][] baseMaze = TwoMazes.returnBaseMaze();
+        int[][] unExplored = TwoMazes.returnUnexploredRegion();
+        int[] XDimension = baseMaze[0];
+        int XSize = XDimension.length;
+        int YSize = baseMaze.length;
+        for (int i = 0; i < YSize; i++){
+            for (int j = 0; j < XSize; j++){
+                if (baseMaze[i][j] == TwoMazes.returnCatSymbol() || baseMaze[i][j] == TwoMazes.returnPlayerSymbol() || baseMaze[i][j] == TwoMazes.returnCheeseSymbol()
+                        || unExplored[i][j] == TwoMazes.returnExploredSymbol()) {
+                    outputMaze[i][j] = baseMaze[i][j];
                 }
                 else{
-                    outputMaze[i][j] = Unexplored[i][j];
+                    outputMaze[i][j] = unExplored[i][j];
                 }
             }
         }
-
     }
 
-    public boolean checkGameState(DisplayOutput PrintToScreen, GameHandler Organizer, MazeHandler MazeCheck){
+    public boolean checkGameState(DisplayOutput PrintToScreen, MazeHandler MazeCheck){
         if (cheeseCollected == totalCheeseNeeded){
             PrintToScreen.winMsg();
             PrintToScreen.OutputMaze(MazeCheck.returnBaseMaze());
@@ -69,46 +75,47 @@ public class GameHandler {
     }
 
     public static void main(String[] args) {
-        GameHandler Organizer = new GameHandler();
-        UserInput InputKey = new UserInput();
-        DisplayOutput PrintToScreen = new DisplayOutput();
-        MazeHandler Testing = new MazeHandler();
-        boolean cheeseEaten = false;
-        boolean CarryOn = true;
-        PrintToScreen.welcomeMsg();
-        PrintToScreen.helpMsg();
-        Testing.updateExploredRegions();
-        while (CarryOn){
-            Testing.updateExploredRegions();
-            Organizer.CombineMaze(Testing);
-            if(revealMaze == false) {
-                PrintToScreen.OutputMaze(Organizer.outputMaze);
+        GameHandler organizer = new GameHandler();
+        UserInput inputKey = new UserInput();
+        DisplayOutput printToScreen = new DisplayOutput();
+        MazeHandler mazeHandler = new MazeHandler();
+        boolean carryOn = true;
+        DisplayOutput.welcomeMsg();
+        DisplayOutput.helpMsg();
+        mazeHandler.updateExploredRegions();
+        while (carryOn){
+            mazeHandler.updateExploredRegions();
+            organizer.CombineMaze(mazeHandler);
+            if (printMaze) {
+                if (revealMaze == false) {
+                    printToScreen.OutputMaze(organizer.outputMaze);
+                    printToScreen.cheeseCollected(cheeseCollected,totalCheeseNeeded);
+                } else {
+                    printToScreen.OutputMaze(mazeHandler.returnBaseMaze());
+                    printToScreen.cheeseCollected(cheeseCollected,totalCheeseNeeded);
+                }
             }
-            else{
-                PrintToScreen.OutputMaze(Testing.returnBaseMaze());
-            }
-            PrintToScreen.cheeseCollected(cheeseCollected,totalCheeseNeeded);
-            PrintToScreen.getInputMsg();
-            InputKey.GetInputKey();
-            int Key = InputKey.ReturnInputKey();
-            if(InterpretInput(Key, Testing)){
-                if (Organizer.checkGameState(PrintToScreen, Organizer, Testing)){
+            printToScreen.getInputMsg();
+            inputKey.GetInputKey();
+            int Key = inputKey.ReturnInputKey();
+            if (InterpretInput(Key, mazeHandler)){
+                if (organizer.checkGameState(printToScreen, mazeHandler)){
                     break;
                 }
-                if (Testing.cheeseEaten()){
+                if (mazeHandler.cheeseEaten()){
                     cheeseCollected++;
                 }
-                Testing.updateCat();
-                if (Organizer.checkGameState(PrintToScreen, Organizer, Testing)){
+                if (organizer.checkGameState(printToScreen, mazeHandler)){
                     break;
                 }
-                if (Testing.cheeseEaten()){
-                    Testing.updateCheese();
+                if (mazeHandler.cheeseEaten()){
+                    mazeHandler.updateCheese();
                 }
+                printMaze = true;
             }
-
-
+            else{
+                printMaze = false;
+            }
         }
-
     }
 }

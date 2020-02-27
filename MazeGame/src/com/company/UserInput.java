@@ -4,50 +4,36 @@ import javax.swing.*;
 import java.util.Scanner;
 
 public class UserInput {
-    private char InputKey;
+    private char inputKey;
 
     public void GetInputKey(){
         Scanner Input = new Scanner(System.in);
         char Key = Input.next().charAt(0);
-        if (Key == 'w'){
-           this.InputKey = Key;
-        }
-        if (Key == 'a'){
-            this.InputKey = Key;
-        }
-        if (Key == 's'){
-            this.InputKey = Key;
-        }
-        if(Key == 'd'){
-            this.InputKey = Key;
-        }
-        if (Key == 'm'){
-            this.InputKey = Key;
-        }
-        if (Key == 'c'){
-            this.InputKey = Key;
-        }
+        this.inputKey = Key;
 
     }
 
     public int ReturnInputKey(){
-        if (this.InputKey == 'w'){
+        if (this.inputKey == 'w' || this.inputKey == 'W'){
             return 1;
         }
-        if(this.InputKey == 'a'){
+        if (this.inputKey == 'a' || this.inputKey == 'A'){
             return 2;
         }
-        if(this.InputKey == 's'){
+        if (this.inputKey == 's' || this.inputKey == 'S'){
             return 3;
         }
-        if ((this.InputKey == 'd')){
+        if (this.inputKey == 'd' || this.inputKey == 'D'){
             return 4;
         }
-        if (this.InputKey == 'm'){
+        if (this.inputKey == 'm' || this.inputKey == 'M'){
             return 5;
         }
-        if (this.InputKey == 'c'){
+        if (this.inputKey == 'c' || this.inputKey == 'C'){
             return 6;
+        }
+        if (this.inputKey == '?'){
+            return 7;
         }
         return -1;
     }

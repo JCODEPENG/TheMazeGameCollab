@@ -38,13 +38,13 @@ public class DisplayOutput {
 
     }
 
-    public void welcomeMsg(){
+    public static void welcomeMsg(){
         System.out.println("----------------------------------------");
         System.out.println("Welcome to Cat and Mouse Maze Adventure!\nBy Joshua Peng and Jocelyn Gau");
         System.out.println("----------------------------------------");
     }
 
-    public void helpMsg(){
+    public static void helpMsg(){
         System.out.println("Directions:\n\tFind 5 cheese before a cat eats you!");
         System.out.println("Legend:\n\t#: Wall\n\t@: You (a mouse)\n\t!: Cat\n\t$: Cheese\n\t.: Unexplored space");
         System.out.println("Moves:\n\tUse W (up), A (left), S (down) and D (right) to move.\n\t(You must press enter after each move).");
@@ -60,6 +60,7 @@ public class DisplayOutput {
     }
     public void getInputMsg(){
         System.out.print("Enter your move [WASD?]: ");
+        System.out.println();
     }
     public void winMsg(){
         System.out.println("Congratulations! You won!");
