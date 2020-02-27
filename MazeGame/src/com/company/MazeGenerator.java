@@ -58,7 +58,7 @@ public class MazeGenerator{
         maze[1][row - 2] = PATH;          //bottom-left cat
         maze[col - 2][row - 2] = PATH;    //bottom-right cat
 
-        for (int i = 0; i < col; i ++){
+        for (int i = 0; i < (row*col/10); i ++){
             randomRemoveWall();
         }
     }
