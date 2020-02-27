@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Stack;
 
+/**
+ *Maze generator class generates the maze by using the depth first search
+ *the maze array is created once the class is constructed so no need to call generate
+ * used a stack instead of recursion to prevent stack overflow from recursive calls
+ */
 public class MazeGenerator{
     private int col;
     private int row;
@@ -12,8 +17,8 @@ public class MazeGenerator{
     private Stack<Integer> inCompleteY;
     private ArrayList<Integer> neighborX;
     private ArrayList<Integer> neighborY;
-    private int wall = 0;
-    private int path = 1;
+    private final int WALL = 0;
+    private final int PATH = 1;
 
     public MazeGenerator(int col, int row){
         this.col = col;
@@ -27,7 +32,7 @@ public class MazeGenerator{
     }
 
     public void generate(){
-        maze[1][1] = path;                //player init
+        maze[1][1] = PATH;                //player init
 
         pushStacks(1, 1);
         int currentX = 1;
@@ -49,23 +54,22 @@ public class MazeGenerator{
             currentX = inCompleteX.pop();
             currentY = inCompleteY.pop();
         }
-        maze[col - 2][1] = path;          //top-right cat
-        maze[1][row - 2] = path;          //bottom-left cat
-        maze[col - 2][row - 2] = path;    //bottom-right cat
+        maze[col - 2][1] = PATH;          //top-right cat
+        maze[1][row - 2] = PATH;          //bottom-left cat
+        maze[col - 2][row - 2] = PATH;    //bottom-right cat
 
-        for (int i = 0; i < row; i ++){
+        for (int i = 0; i < (row*col/10); i ++){
             randomRemoveWall();
         }
     }
 
     public boolean isWall(int x, int y){
-        return (maze[x][y] == wall);
+        return (maze[x][y] == WALL);
     }
 
     public int[][] getMaze(){
         return maze;
     }
-
 
     private void pushStacks(int x, int y){
         inCompleteX.push(x);
@@ -77,8 +81,8 @@ public class MazeGenerator{
         int nextY = neighborY.get(next);
         int wallX = x - (x - nextX) / 2;
         int wallY = y - (y - nextY) / 2;
-        maze[wallX][wallY] = path;
-        maze[nextX][nextY] = path;
+        maze[wallX][wallY] = PATH;
+        maze[nextX][nextY] = PATH;
     }
 
     private void findNeighbor(int x, int y){
@@ -133,7 +137,7 @@ public class MazeGenerator{
             while(true) {
                 ranX = random.nextInt(col);
                 ranY = random.nextInt(row);
-                if (maze[ranX][ranY] == wall){
+                if (maze[ranX][ranY] == WALL){
                     break;
                 }
             }
@@ -156,7 +160,7 @@ public class MazeGenerator{
             }
             if ((left || top) && (left || down) && (right || top) && (right || down)){
                 isRemoved = true;
-                maze[ranX][ranY] = path;
+                maze[ranX][ranY] = PATH;
             }
         }
     }

@@ -4,38 +4,35 @@ public class DisplayOutput {
     public void OutputMaze(int[][] Maze){
         System.out.println("Maze: ");
         assert(Maze != null);
-        int[] XDimension = Maze[0];
-        int XSize = XDimension.length;
-        int YSize = Maze.length;
-        for  (int i = 0; i < YSize; i++){
-            for (int j = 0; j < XSize; j++){
+        int[] xDimension = Maze[0];
+        int xSize = xDimension.length;
+        int ySize = Maze.length;
+        for  (int i = 0; i < ySize; i++){
+            for (int j = 0; j < xSize; j++){
                 if (Maze[i][j] == 0){
                     System.out.print('#');
                 }
-                if (Maze[i][j] == 1){
+                else if (Maze[i][j] == 1){
                     System.out.print(' ');
                 }
-                if (Maze[i][j] == 3){
+                else if (Maze[i][j] == 3){
                     System.out.print('.');
                 }
-                if(Maze[i][j] == 4){
+                else if(Maze[i][j] == 4){
                     System.out.print('@');
                 }
-                if (Maze[i][j] == 5){
+                else if (Maze[i][j] == 5){
                     System.out.print('!');
                 }
-                if (Maze[i][j] == 6){
+                else if (Maze[i][j] == 6){
                     System.out.print('$');
                 }
-                if (Maze[i][j] == 7){
+                else if (Maze[i][j] == 7){
                     System.out.print('X');
                 }
-
             }
             System.out.println();
         }
-
-
     }
 
     public static void welcomeMsg(){

@@ -3,6 +3,11 @@ package com.company;
 import java.awt.*;
 import java.util.Random;
 
+/**
+ * Cat class extends from the Mouse class
+ * as all the methods in Mouse class is needed
+ * this class holds information for backtracking
+ */
 public class Cat extends Mouse {
     private int lastX;
     private int lastY;
