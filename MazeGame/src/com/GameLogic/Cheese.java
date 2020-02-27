@@ -1,5 +1,10 @@
-package com.company;
+package com.GameLogic;
 
+/**
+ * cheese class is a separate class because it is a unique object
+ * as there could be more potential fields we kept this class alone
+ * even though it's simple and basic.
+ */
 public class Cheese {
     private int positionX;
     private int positionY;

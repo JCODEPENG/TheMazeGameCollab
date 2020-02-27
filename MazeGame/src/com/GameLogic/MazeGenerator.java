@@ -1,4 +1,4 @@
-package com.company;
+package com.GameLogic;
 
 import java.util.ArrayList;
 import java.util.Random;

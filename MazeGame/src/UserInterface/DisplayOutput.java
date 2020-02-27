@@ -1,7 +1,13 @@
-package com.company;
+package UserInterface;
 
+/**
+ * DisplayOutput is responsible for all the print statements
+ * In addition, it decodes the numbers that represents different objects
+ * such as Player, Cat, Cheese, Wall, Path, and Fog. We think the Game Logic
+ * should have a different interpretation of symbols than the UI so it could be easily modified.
+ */
 public class DisplayOutput {
-    public void OutputMaze(int[][] Maze){
+    public void outputMaze(int[][] Maze){
         System.out.println("Maze: ");
         assert(Maze != null);
         int[] xDimension = Maze[0];

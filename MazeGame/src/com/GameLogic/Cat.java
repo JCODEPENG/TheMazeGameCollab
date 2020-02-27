@@ -1,7 +1,4 @@
-package com.company;
-
-import java.awt.*;
-import java.util.Random;
+package com.GameLogic;
 
 /**
  * Cat class extends from the Mouse class

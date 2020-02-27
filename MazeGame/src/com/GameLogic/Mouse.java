@@ -1,5 +1,9 @@
-package com.company;
+package com.GameLogic;
 
+/**
+ * Mouse class is a basic class
+ * Communicates coordinate, symbol, and moves
+ */
 public class Mouse {
     private int positionX;
     private int positionY;

@@ -1,8 +1,12 @@
-package com.company;
+package com.GameLogic;
 
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * Maze Handler class handles the maze array
+ * responsible for updating all object position and check for collision
+ */
 public class MazeHandler {
     private int[][] baseMaze;
     private int[][] unexploredRegion;
@@ -32,7 +36,6 @@ public class MazeHandler {
     }
 
     public boolean updatePlayer(int choice){
-
         int nextX = direction(choice)[0] + player.getX();
         int nextY = direction(choice)[1] + player.getY();
 
@@ -43,8 +46,6 @@ public class MazeHandler {
             return true;
         }
         return false;
-
-
     }
 
     private int[] direction(int choice){
