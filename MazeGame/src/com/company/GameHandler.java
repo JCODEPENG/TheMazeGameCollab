@@ -73,6 +73,7 @@ public class GameHandler {
         UserInput InputKey = new UserInput();
         DisplayOutput PrintToScreen = new DisplayOutput();
         MazeHandler Testing = new MazeHandler();
+        boolean cheeseEaten = false;
         boolean CarryOn = true;
         PrintToScreen.welcomeMsg();
         PrintToScreen.helpMsg();
@@ -96,11 +97,13 @@ public class GameHandler {
                 }
                 if (Testing.cheeseEaten()){
                     cheeseCollected++;
-                    Testing.updateCheese();
                 }
                 Testing.updateCat();
                 if (Organizer.checkGameState(PrintToScreen, Organizer, Testing)){
                     break;
+                }
+                if (Testing.cheeseEaten()){
+                    Testing.updateCheese();
                 }
             }
 
