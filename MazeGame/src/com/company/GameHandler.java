@@ -9,27 +9,27 @@ public class GameHandler {
     private static boolean printMaze = true;
     private int[][] outputMaze = new int[15][20];
 
-    public static boolean InterpretInput(int Choice, MazeHandler CurrentGame){
-        if (Choice == 1 || Choice == 2 || Choice == 3 || Choice == 4){
-            boolean Updated = CurrentGame.updatePlayer(Choice);
+    public static boolean InterpretInput(int choice, MazeHandler currentGame){
+        if (choice == 1 || choice == 2 || choice == 3 || choice == 4){
+            boolean Updated = currentGame.updatePlayer(choice);
             if(!Updated) {
                 DisplayOutput.invalidMoveMsg();
                 return false;
             }
             else{
-                CurrentGame.updateCat();
+                currentGame.updateCat();
                 return true;
             }
         }
-        else if (Choice == 5){
+        else if (choice == 5){
             revealMaze = true;
             return true;
 
         }
-        else if (Choice == 6){
+        else if (choice == 6){
             totalCheeseNeeded = 1;
         }
-        else if (Choice == 7){
+        else if (choice == 7){
             DisplayOutput.helpMsg();
         }
         else{
@@ -58,16 +58,16 @@ public class GameHandler {
         }
     }
 
-    public boolean checkGameState(DisplayOutput PrintToScreen, MazeHandler MazeCheck){
+    public boolean checkGameState(DisplayOutput PrintToScreen, MazeHandler mazeCheck){
         if (cheeseCollected == totalCheeseNeeded){
             PrintToScreen.winMsg();
-            PrintToScreen.OutputMaze(MazeCheck.returnBaseMaze());
+            PrintToScreen.OutputMaze(mazeCheck.returnBaseMaze());
             PrintToScreen.cheeseCollected(cheeseCollected,totalCheeseNeeded);
             return true;
         }
-        if (MazeCheck.playerEaten()){
+        if (mazeCheck.playerEaten()){
             PrintToScreen.gotEatenMsg();
-            PrintToScreen.OutputMaze(MazeCheck.returnBaseMaze());
+            PrintToScreen.OutputMaze(mazeCheck.returnBaseMaze());
             PrintToScreen.gameOverMsg();
             return true;
         }
