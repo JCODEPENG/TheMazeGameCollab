@@ -67,23 +67,39 @@ public class MazeHandler {
         ArrayList<Integer> choiceX = new ArrayList<Integer>();
         ArrayList<Integer> choiceY = new ArrayList<Integer>();
         int choice = 0;
+
         Random random = new Random();
 
         for (Cat cat : cats){
+            int lastChoiceX = cat.getLastX();
+            int lastChoiceY = cat.getLastY();
             choiceX.clear();
             choiceY.clear();
-            cat.setLastX(cat.getX());
-            cat.setLastY(cat.getY());
             for (int i = 1; i < 5; i++){
                 int newX = cat.getX() + direction(i)[0];
                 int newY = cat.getY() + direction(i)[1];
                 //swapped here
-                if (!isWall(newY, newX) && !cat.didBackTrace()){
-                    choiceX.add(newX);
-                    choiceY.add(newY);
+                if (!isWall(newY, newX)){
+                    if (!(cat.didBackTrace() && newX == cat.getLastX() && newY == cat.getLastY())) {
+                        choiceX.add(newX);
+                        choiceY.add(newY);
+                    }
                 }
             }
+            if (choiceX.isEmpty()){
+                choiceX.add(lastChoiceX);
+                choiceY.add(lastChoiceY);
+            }
             choice = random.nextInt(choiceX.size());
+
+            if (choiceX.get(choice) == cat.getLastX() && choiceY.get(choice) == cat.getLastY()){
+                cat.setBackTrace(true);
+            } else{
+                cat.setBackTrace(false);
+            }
+            cat.setLastX(cat.getX());
+            cat.setLastY(cat.getY());
+
             if(catOnCheese(cat.getX(), cat.getY())){
                 setSymbol(cat.getY(), cat.getX(), CHEESE_SYMBOL);
                 cat.move(choiceX.get(choice), choiceY.get(choice));
@@ -93,12 +109,6 @@ public class MazeHandler {
                 setSymbol(cat.getY(), cat.getX(), PATH_SYMBOL);
                 cat.move(choiceX.get(choice), choiceY.get(choice));
                 setSymbol(cat.getY(), cat.getX(), CAT_SYMBOL);
-            }
-
-            if (cat.getX() == cat.getLastX() && cat.getY() == cat.getLastY()){
-                cat.setBackTrace(true);
-            } else{
-                cat.setBackTrace(false);
             }
 
         }
@@ -207,6 +217,7 @@ public class MazeHandler {
     }
 
     private void initCatList(){
+        cats.clear();
         Cat catTopRight = new Cat(1, col-2, CAT_SYMBOL);
         Cat catBottomLeft = new Cat(row-2, 1, CAT_SYMBOL);
         Cat catBottomRight = new Cat(row -2, col - 2, CAT_SYMBOL);

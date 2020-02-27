@@ -4,19 +4,21 @@ import java.awt.*;
 import java.util.Random;
 
 public class Cat extends Mouse {
-    private static int lastX;
-    private static int lastY;
-    private static boolean didBackTrace = false;
+    private int lastX;
+    private int lastY;
+    private boolean didBackTrace = false;
 
     public Cat(int x, int y, int symbol) {
         super(x, y, symbol);
+        this.lastX = x;
+        this.lastY = y;
     }
 
     public boolean didBackTrace(){
         return didBackTrace;
     }
-    public void setBackTrace(boolean didBackTrace){
-        this.didBackTrace = didBackTrace;
+    public void setBackTrace(boolean backTrace){
+        this.didBackTrace = backTrace;
     }
 
     public int getLastX(){
